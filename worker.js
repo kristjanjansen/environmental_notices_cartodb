@@ -164,38 +164,38 @@ function fusion_sql(row, callback) {
 
 	var api_key = 'AIzaSyBXyUdnzaES3vqQluaE6f2UIswT1YExFB4';
 	var table_id = '1RHc5WYocfri-0qxY8ragYxObAGXLUxBK-hRQ4vg';
-	
+	var email = 'keskkonnateated@gmail.com';
+	var password = 'teatedkonnakesk';
 	var url = 'https://www.googleapis.com/fusiontables/v1/query?' + array2url({
 		sql: "INSERT INTO " + table_id + " (Id, Date) VALUES ('" + row.id + "', '" + row.date +"');",
 		key: api_key 
 	});
 
-var GoogleClientLogin = require('googleclientlogin').GoogleClientLogin;
-var googleAuth = new GoogleClientLogin({
-	email: 'keskkonnateated@gmail.com',
-	password: 'teatedkonnakesk',
-	service: 'fusiontables',
-	accountType: GoogleClientLogin.accountTypes.google
-});
-googleAuth.on(GoogleClientLogin.events.login, function(){
+	var GoogleClientLogin = require('googleclientlogin').GoogleClientLogin;
+	var googleAuth = new GoogleClientLogin({
+		email: email,
+		password: password,
+		service: 'fusiontables',
+		accountType: GoogleClientLogin.accountTypes.google
+	});
+	googleAuth.on(GoogleClientLogin.events.login, function(){
 
 	request({
 			url: url,
-			json:true, 
-			method: 'post',
+			json: true, 
+			method: 'POST',
 			headers: {
 				'Authorization': 'GoogleLogin auth=' + googleAuth.getAuthId()
 			}			
-		}, function (error, response, body) {
-		console.log(response);
-		if (error) throw error;
-		if (!error && response.statusCode == 200) {
-			return callback(body);
-		}
+		}, function (err, response, body) {
+			if (err) throw error;
+			if (!err && response.statusCode == 200) {
+				return callback(body);
+			}
+		});
+
 	});
 
-});
-
-googleAuth.login();
+	googleAuth.login();
 
 }
