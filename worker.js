@@ -79,23 +79,28 @@ scraper(
 
 	var count = 0;
 
-	$('table[cellpadding=3] tr').each(function() {
 		var row = new Object();
+
+	$('table[cellpadding=3] tr').each(function() {
 		
 		if (count === 0) {
 			var link = $(this).find('td.right a').attr('href').split('=');
-			row.push(link[link.length - 1]);
-			row.push($(this).find('td[width=85]').text().trim());
-			row.push($(this).find('td.teateliik').text().trim());
+			row.id = link[link.length - 1];
+			row.date = $(this).find('td[width=85]').text().trim();
+			row.type = $(this).find('td.teateliik').text().trim();
 		}
 		if (count == 1) {
 			var text_raw = $(this).find('td[colspan=4]').text().trim();
 			var text = iconv.convert(new Buffer(text_raw, 'binary')).toString();
-			row.push(text.substr(50));
+			row.text = text;
 		}
 		if (count == 2) { 
-			str2geo(row[3], function(geo) {
-	   		console.log(geo.str.substr(10) + ' ' + geo.lat + ' ' + geo.lng); 
+			// console.log(row)
+			str2geo(row, function(geo) {
+	   		//console.log(row.text.substr(0, 70) + ' ' + geo.lat + ' ' + geo.lng); 
+	   		fusion_sql(row, function(columns) {
+		   		console.log(columns);
+		   	});
 	   	});
 	   
 			row = [];
@@ -131,10 +136,10 @@ function array2url(values) {
 
 // Function to convert address string to lat/lon coordinates
 
-function str2geo(str, callback) {
+function str2geo(row, callback) {
 
 	var url = 'http://api.geonames.org/searchJSON?' + array2url({
-		q: str.replace(/ /gi, ','),
+		q: row.text.replace(/ /gi, ','),
 		username: USERNAME,
 		operator: 'OR',
 		formatted: 'true',
@@ -149,8 +154,48 @@ function str2geo(str, callback) {
 		if (!error && response.statusCode == 200) {
 			lat = body.geonames[0].lat;
 			lng = body.geonames[0].lng;
-			return callback({str: str, lat: lat, lng: lng});
+			return callback({lat: lat, lng: lng});
 		}
 	});
+
+}
+
+function fusion_sql(row, callback) {
+
+	var api_key = 'AIzaSyBXyUdnzaES3vqQluaE6f2UIswT1YExFB4';
+	var table_id = '1RHc5WYocfri-0qxY8ragYxObAGXLUxBK-hRQ4vg';
+	
+	var url = 'https://www.googleapis.com/fusiontables/v1/query?' + array2url({
+		sql: "INSERT INTO " + table_id + " (Id, Date) VALUES ('" + row.id + "', '" + row.date +"');",
+		key: api_key 
+	});
+
+var GoogleClientLogin = require('googleclientlogin').GoogleClientLogin;
+var googleAuth = new GoogleClientLogin({
+	email: 'keskkonnateated@gmail.com',
+	password: 'teatedkonnakesk',
+	service: 'fusiontables',
+	accountType: GoogleClientLogin.accountTypes.google
+});
+googleAuth.on(GoogleClientLogin.events.login, function(){
+
+	request({
+			url: url,
+			json:true, 
+			method: 'post',
+			headers: {
+				'Authorization': 'GoogleLogin auth=' + googleAuth.getAuthId()
+			}			
+		}, function (error, response, body) {
+		console.log(response);
+		if (error) throw error;
+		if (!error && response.statusCode == 200) {
+			return callback(body);
+		}
+	});
+
+});
+
+googleAuth.login();
 
 }
