@@ -90,7 +90,7 @@ scraper(
 		if (count == 1) {
 			var text_raw = $(this).find('td[colspan=4]').text().trim();
 			var text = iconv.convert(new Buffer(text_raw, 'binary')).toString();
-			row.push(text.substr(200));
+			row.push(text.substr(50));
 		}
 		if (count == 2) {
 			data.push(row)
