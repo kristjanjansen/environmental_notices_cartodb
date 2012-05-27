@@ -91,13 +91,15 @@ scraper(
 		}
 		if (count == 1) {
 			var text_raw = $(this).find('td[colspan=4]').text().trim();
-			var text = iconv.convert(new Buffer(text_raw, 'binary')).toString();
-			row.text = text;
+			var description = iconv.convert(new Buffer(text_raw, 'binary')).toString();
+			row.description = description;
 		}
 		if (count == 2) { 
-			// console.log(row)
 			str2geo(row, function(geo) {
-	   		//console.log(row.text.substr(0, 70) + ' ' + geo.lat + ' ' + geo.lng); 
+	   		row.geometry = 
+	   			'<Point><coordinates>' + geo.lat +',' + geo.lng +'</coordinates></Point>';
+	   		row.lat = geo.lat;
+		 		row.lng = geo.lng;	   		
 	   		fusion_sql(row, function(columns) {
 		   		console.log(columns);
 		   	});
@@ -139,7 +141,7 @@ function array2url(values) {
 function str2geo(row, callback) {
 
 	var url = 'http://api.geonames.org/searchJSON?' + array2url({
-		q: row.text.replace(/ /gi, ','),
+		q: row.description.replace(/ /gi, ','),
 		username: USERNAME,
 		operator: 'OR',
 		formatted: 'true',
@@ -166,11 +168,32 @@ function fusion_sql(row, callback) {
 	var table_id = '1RHc5WYocfri-0qxY8ragYxObAGXLUxBK-hRQ4vg';
 	var email = 'keskkonnateated@gmail.com';
 	var password = 'teatedkonnakesk';
+	
+	
+	for(var key in row){
+		attributename+": "+myobject[attributename];
+	}
+
 	var url = 'https://www.googleapis.com/fusiontables/v1/query?' + array2url({
-		sql: "INSERT INTO " + table_id + " (Id, Date) VALUES ('" + row.id + "', '" + row.date +"');",
+		sql: "INSERT INTO " + table_id + 
+		" (Id, Date, Type, Description, Geometry, Lat, Lng) VALUES ('" 
+			+ row.id 
+			+ "', '" 
+			+ row.date 
+			+ "', '" 
+			+ row.type 
+			+ "', '" 
+			+ row.description 
+			+ "', '" 
+			+ row.geometry 
+			+ "', '" 
+			+ row.lat 
+			+ "', '" 
+			+ row.lng 
+			+ "');",
 		key: api_key 
 	});
-
+	
 	var GoogleClientLogin = require('googleclientlogin').GoogleClientLogin;
 	var googleAuth = new GoogleClientLogin({
 		email: email,
