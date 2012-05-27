@@ -104,7 +104,7 @@ scraper(
 				 row.Lat = geo.lat;
 				 row.Lng = geo.lng;	   		
 				 fusion_insert(table_id, row, function(body) {
-					// console.log(body);
+					 console.log(body);
 				 });
 			 });
 
@@ -141,18 +141,19 @@ function str2geo(row, callback) {
 		username: USERNAME,
 		operator: 'OR',
 		formatted: 'true',
-		maxRows: 5,
+		maxRows: 1,
 		lang: 'et',
 		style: 'SHORT',
 		country: 'EE',
 		featureCode: 'PPL',  
 	});
-
+	console.log(url);
+	
 	request({url:url,json:true}, function (error, response, body) {
 		if (!error && response.statusCode == 200) {
 			lat = body.geonames[0].lat;
 			lng = body.geonames[0].lng;
-			console.log(body);
+			// console.log(body);
 			return callback({lat: lat, lng: lng});
 		}
 	});
