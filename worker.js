@@ -6,8 +6,10 @@ var csv = require('csv');
 
 var iconv = new Iconv('ISO-8859-15', 'UTF-8');
 
-var MAX_PAGES = 10;
+var MAX_PAGES = 1;
 var USERNAME = 'keskkonnateated';
+
+var table_id = '1RHc5WYocfri-0qxY8ragYxObAGXLUxBK-hRQ4vg';
 
 TYPES = {
 		'580082': 'Geneetiliselt muundatud organismide keskkonda viimise teated',
@@ -82,7 +84,7 @@ scraper(
 	var row = {};
 
 	$('table[cellpadding=3] tr').each(function() {
-		
+
 		if (count === 0) {
 			var link = $(this).find('td.right a').attr('href').split('=');
 			row.Id = link[link.length - 1];
@@ -97,19 +99,19 @@ scraper(
 		if (count == 2) { 
 			str2geo(row, function(geo) {
 				row.Description = row.Description.substr(0, 200);
-	   		row.Geometry = 
-	   			'<Point><coordinates>' + geo.lat +',' + geo.lng +'</coordinates></Point>';
-	   		row.Lat = geo.lat;
-		 		row.Lng = geo.lng;	   		
-	   		fusion_sql(row, function(columns) {
-		   		console.log(columns);
-		   	});
-	   	});
-	   
+				 row.Geometry = 
+					 '<Point><coordinates>' + geo.lat +',' + geo.lng +'</coordinates></Point>';
+				 row.Lat = geo.lat;
+				 row.Lng = geo.lng;	   		
+				 fusion_insert(table_id, row, function(body) {
+					 console.log(body);
+				 });
+			 });
+
 			row = [];
 			count = -1;
 		}
-									
+
 		count++;
 
 	});
@@ -156,34 +158,20 @@ function str2geo(row, callback) {
 
 }
 
-function fusion_sql(row, callback) {
+function fusion_sql(sql, callback) {
+
 
 	var api_key = 'AIzaSyBXyUdnzaES3vqQluaE6f2UIswT1YExFB4';
-	var table_id = '1RHc5WYocfri-0qxY8ragYxObAGXLUxBK-hRQ4vg';
 	var email = 'keskkonnateated@gmail.com';
 	var password = 'teatedkonnakesk';
 
-	var sql_keys = "";
-	var sql_values = "";
-
-	for(var key in row) {
-		sql_keys += key + ', ';
-		sql_values += "'" + row[key] + "', ";
-	}
-
 	var url = 'https://www.googleapis.com/fusiontables/v1/query?' + array2url({
-		sql: "INSERT INTO " + 
-			table_id +
-			" (" +
-			sql_keys.substr(0, sql_keys.length - 2) +
-			") VALUES (" +
-			sql_values.substr(0, sql_values.length - 2) +
-			");",
+		sql: sql,
 		key: api_key 
 	});
-	
-	// console.log('-----\n'+ url);
-	
+
+	console.log(url);
+
 	var GoogleClientLogin = require('googleclientlogin').GoogleClientLogin;
 	var googleAuth = new GoogleClientLogin({
 		email: email,
@@ -191,7 +179,7 @@ function fusion_sql(row, callback) {
 		service: 'fusiontables',
 		accountType: GoogleClientLogin.accountTypes.google
 	});
-	
+
 	googleAuth.on(GoogleClientLogin.events.login, function(){
 
 		request({
@@ -202,6 +190,7 @@ function fusion_sql(row, callback) {
 				'Authorization': 'GoogleLogin auth=' + googleAuth.getAuthId()
 			}			
 			}, function (err, response, body) { 
+				console.log(body);
 				if (!err && response.statusCode == 200) {
 					return callback(body);
 				}
@@ -210,5 +199,31 @@ function fusion_sql(row, callback) {
 	});
 
 	googleAuth.login();
+
+}
+
+function fusion_insert(table_id, row, callback) {
+
+	var sql_keys = "";
+	var sql_values = "";
+
+	for(var key in row) {
+		sql_keys += key + ', ';
+		sql_values += "'" + row[key] + "', ";
+	}
+
+	var sql = 
+		"INSERT INTO " + 
+		table_id +
+		" (" +
+		sql_keys.substr(0, sql_keys.length - 2) +
+		") VALUES (" +
+		sql_values.substr(0, sql_values.length - 2) +
+		");"
+		;
+
+	fusion_sql(sql, function(body) {
+		return callback(body);
+	});
 
 }
