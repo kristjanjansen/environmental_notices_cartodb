@@ -104,7 +104,7 @@ scraper(
 				 row.Lat = geo.lat;
 				 row.Lng = geo.lng;	   		
 				 fusion_insert(table_id, row, function(body) {
-					 console.log(body);
+					// console.log(body);
 				 });
 			 });
 
@@ -152,6 +152,7 @@ function str2geo(row, callback) {
 		if (!error && response.statusCode == 200) {
 			lat = body.geonames[0].lat;
 			lng = body.geonames[0].lng;
+			console.log(body);
 			return callback({lat: lat, lng: lng});
 		}
 	});
@@ -159,7 +160,6 @@ function str2geo(row, callback) {
 }
 
 function fusion_sql(sql, callback) {
-
 
 	var api_key = 'AIzaSyBXyUdnzaES3vqQluaE6f2UIswT1YExFB4';
 	var email = 'keskkonnateated@gmail.com';
@@ -169,8 +169,6 @@ function fusion_sql(sql, callback) {
 		sql: sql,
 		key: api_key 
 	});
-
-	console.log(url);
 
 	var GoogleClientLogin = require('googleclientlogin').GoogleClientLogin;
 	var googleAuth = new GoogleClientLogin({
@@ -190,7 +188,6 @@ function fusion_sql(sql, callback) {
 				'Authorization': 'GoogleLogin auth=' + googleAuth.getAuthId()
 			}			
 			}, function (err, response, body) { 
-				console.log(body);
 				if (!err && response.statusCode == 200) {
 					return callback(body);
 				}
