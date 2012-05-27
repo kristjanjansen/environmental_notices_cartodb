@@ -6,7 +6,7 @@ var csv = require('csv');
 
 var iconv = new Iconv('ISO-8859-15', 'UTF-8');
 
-var MAX_PAGES = 1;
+var MAX_PAGES = 10;
 var USERNAME = 'keskkonnateated';
 
 TYPES = {
@@ -79,27 +79,28 @@ scraper(
 
 	var count = 0;
 
-		var row = new Object();
+	var row = {};
 
 	$('table[cellpadding=3] tr').each(function() {
 		
 		if (count === 0) {
 			var link = $(this).find('td.right a').attr('href').split('=');
-			row.id = link[link.length - 1];
-			row.date = $(this).find('td[width=85]').text().trim();
-			row.type = $(this).find('td.teateliik').text().trim();
+			row.Id = link[link.length - 1];
+			row.Date = $(this).find('td[width=85]').text().trim();
+			row.Type = $(this).find('td.teateliik').text().trim();
 		}
 		if (count == 1) {
-			var text_raw = $(this).find('td[colspan=4]').text().trim();
-			var description = iconv.convert(new Buffer(text_raw, 'binary')).toString();
-			row.description = description;
+			var description_raw = $(this).find('td[colspan=4]').text().trim();
+			var description = iconv.convert(new Buffer(description_raw, 'binary')).toString();
+			row.Description = description;
 		}
 		if (count == 2) { 
 			str2geo(row, function(geo) {
-	   		row.geometry = 
+				row.Description = row.Description.substr(0, 200);
+	   		row.Geometry = 
 	   			'<Point><coordinates>' + geo.lat +',' + geo.lng +'</coordinates></Point>';
-	   		row.lat = geo.lat;
-		 		row.lng = geo.lng;	   		
+	   		row.Lat = geo.lat;
+		 		row.Lng = geo.lng;	   		
 	   		fusion_sql(row, function(columns) {
 		   		console.log(columns);
 		   	});
@@ -113,16 +114,9 @@ scraper(
 
 	});
 
-/*
-	  str2geo(data[3], function(geo) {
-	  	data.push(geo.lat); 
-	  	data.push(geo.lng); 
-	  });
-*/
-
 },
 {
-//	'reqPerSec': 10
+//	'reqPerSec': 0.1
 });
 
 
@@ -141,7 +135,7 @@ function array2url(values) {
 function str2geo(row, callback) {
 
 	var url = 'http://api.geonames.org/searchJSON?' + array2url({
-		q: row.description.replace(/ /gi, ','),
+		q: row.Description.replace(/ /gi, ','),
 		username: USERNAME,
 		operator: 'OR',
 		formatted: 'true',
@@ -168,31 +162,27 @@ function fusion_sql(row, callback) {
 	var table_id = '1RHc5WYocfri-0qxY8ragYxObAGXLUxBK-hRQ4vg';
 	var email = 'keskkonnateated@gmail.com';
 	var password = 'teatedkonnakesk';
-	
-	
-	for(var key in row){
-		attributename+": "+myobject[attributename];
+
+	var sql_keys = "";
+	var sql_values = "";
+
+	for(var key in row) {
+		sql_keys += key + ', ';
+		sql_values += "'" + row[key] + "', ";
 	}
 
 	var url = 'https://www.googleapis.com/fusiontables/v1/query?' + array2url({
-		sql: "INSERT INTO " + table_id + 
-		" (Id, Date, Type, Description, Geometry, Lat, Lng) VALUES ('" 
-			+ row.id 
-			+ "', '" 
-			+ row.date 
-			+ "', '" 
-			+ row.type 
-			+ "', '" 
-			+ row.description 
-			+ "', '" 
-			+ row.geometry 
-			+ "', '" 
-			+ row.lat 
-			+ "', '" 
-			+ row.lng 
-			+ "');",
+		sql: "INSERT INTO " + 
+			table_id +
+			" (" +
+			sql_keys.substr(0, sql_keys.length - 2) +
+			") VALUES (" +
+			sql_values.substr(0, sql_values.length - 2) +
+			");",
 		key: api_key 
 	});
+	
+	// console.log('-----\n'+ url);
 	
 	var GoogleClientLogin = require('googleclientlogin').GoogleClientLogin;
 	var googleAuth = new GoogleClientLogin({
@@ -201,21 +191,21 @@ function fusion_sql(row, callback) {
 		service: 'fusiontables',
 		accountType: GoogleClientLogin.accountTypes.google
 	});
+	
 	googleAuth.on(GoogleClientLogin.events.login, function(){
 
-	request({
+		request({
 			url: url,
 			json: true, 
 			method: 'POST',
 			headers: {
 				'Authorization': 'GoogleLogin auth=' + googleAuth.getAuthId()
 			}			
-		}, function (err, response, body) {
-			if (err) throw error;
-			if (!err && response.statusCode == 200) {
-				return callback(body);
-			}
-		});
+			}, function (err, response, body) { 
+				if (!err && response.statusCode == 200) {
+					return callback(body);
+				}
+			});
 
 	});
 
