@@ -80,7 +80,8 @@ scraper(
 	var count = 0;
 
 	$('table[cellpadding=3] tr').each(function() {
-
+		var row = new Object();
+		
 		if (count === 0) {
 			var link = $(this).find('td.right a').attr('href').split('=');
 			row.push(link[link.length - 1]);
@@ -92,32 +93,29 @@ scraper(
 			var text = iconv.convert(new Buffer(text_raw, 'binary')).toString();
 			row.push(text.substr(50));
 		}
-		if (count == 2) {
-			data.push(row)
+		if (count == 2) { 
+			str2geo(row[3], function(geo) {
+	   		console.log(geo.str.substr(10) + ' ' + geo.lat + ' ' + geo.lng); 
+	   	});
+	   
 			row = [];
 			count = -1;
 		}
+									
 		count++;
 
 	});
 
-	csv()
-		.from(data)
-		.toPath(__dirname+'/data.csv',{flags:'a'})
-		.transform(function(data, index) {
-			str2geo(data[3], function(geo) {
-				data.push(geo.lat); 
-				data.push(geo.lng); 
-			});
-			return data;
-		})
-		.on('data',function(data,index) {
-//     console.log('#'+index+' '+JSON.stringify(data));
-		});
+/*
+	  str2geo(data[3], function(geo) {
+	  	data.push(geo.lat); 
+	  	data.push(geo.lng); 
+	  });
+*/
 
 },
 {
-	'reqPerSec': 0.1
+//	'reqPerSec': 10
 });
 
 
@@ -151,7 +149,7 @@ function str2geo(str, callback) {
 		if (!error && response.statusCode == 200) {
 			lat = body.geonames[0].lat;
 			lng = body.geonames[0].lng;
-			return callback({lat: lat, lng: lng});
+			return callback({str: str, lat: lat, lng: lng});
 		}
 	});
 
