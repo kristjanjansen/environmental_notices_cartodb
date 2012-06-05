@@ -103,7 +103,6 @@ scraper(
 			   console.log(i + row.Id);
 				
 				str2geo(row, function(geo) {
-					console.log('Geo: ' + i + geo.g);
 				});
 				
 				/*
@@ -189,17 +188,19 @@ function str2geo(row, callback) {
 		featureCode: 'PPL',  
 	});
 	
-	return callback({g: row.Id});
+// 	return callback({g: row.Id});
 
-	/*
+	
+	
 	request({url:url,json:true}, function (error, response, body) {
 		if (!error && response.statusCode == 200) {
 			lat = body.geonames[0].lat;
 			lng = body.geonames[0].lng;
-			return callback({lat: lat, lng: lng, geoId: row.Id});
+			console.log('Req: ' + row.Id);
+			// return callback({lat: lat, lng: lng, geoId: row.Id});
 		}
 	});
-	*/
+	
 }
 
 function fusion_sql(sql, callback) {
