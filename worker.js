@@ -73,7 +73,7 @@ for (var i=1; i < (MAX_PAGES * 10) + 11 ; i = i + 10) {
 // Main scraper loop, using arrays of URLs
 
 scraper(	
-	uris, 
+	uris[0], 
 	function(err, $) {
 		if (err) {
 			throw err;
@@ -82,9 +82,25 @@ scraper(
 	var count = 0;
 
 	var row = {};
-
-	$('table[cellpadding=3] tr').each(function() {
-
+	
+	var a = '';
+	var b = [];
+	
+	$('table[cellpadding=3] tr').each(function(i, item) {
+			
+			if (i % 3 == 0) {
+			
+			row.Type = $(this).find('td.teateliik').text().trim();
+			var link = $(this).find('td.right a').attr('href').split('=');
+			row.Id = link[link.length - 1];
+			var description_raw = $(this).next().find('td[colspan=4]').text().trim();
+			var description = iconv.convert(new Buffer(description_raw, 'binary')).toString();
+			row.Description = description.substr(0, 30);
+			
+      console.log(i + row.Id + ' ' + row.Type);
+			
+			}
+/*
 		if (count === 0) {
 			var link = $(this).find('td.right a').attr('href').split('=');
 			row.Id = link[link.length - 1];
@@ -113,6 +129,7 @@ scraper(
 		}
 
 		count++;
+*/
 
 	});
 
