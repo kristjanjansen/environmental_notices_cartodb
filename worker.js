@@ -88,16 +88,40 @@ scraper(
 	
 	$('table[cellpadding=3] tr').each(function(i, item) {
 			
+			// Getting every third row of the table
+			
 			if (i % 3 == 0) {
 			
-			row.Type = $(this).find('td.teateliik').text().trim();
-			var link = $(this).find('td.right a').attr('href').split('=');
-			row.Id = link[link.length - 1];
-			var description_raw = $(this).next().find('td[colspan=4]').text().trim();
-			var description = iconv.convert(new Buffer(description_raw, 'binary')).toString();
-			row.Description = description.substr(0, 30);
+				row.Type = $(this).find('td.teateliik').text().trim();
+				var link = $(this).find('td.right a').attr('href').split('=');
+				row.Id = link[link.length - 1];
 			
-      console.log(i + row.Id + ' ' + row.Type);
+				var description_raw = $(this).next().find('td[colspan=4]').text().trim();
+				var description = iconv.convert(new Buffer(description_raw, 'binary')).toString();
+				row.Description = description.substr(0, 30);
+			
+			   console.log(i + row.Id);
+				
+				str2geo(row, function(geo) {
+					console.log('Geo: ' + i + geo.g);
+				});
+				
+				/*
+				str2geo(row, function(geo) {
+					row.Description = row.Description.substr(0, 200);
+				 	row.Geometry = 
+						 '<Point><coordinates>' + geo.lat +',' + geo.lng +'</coordinates></Point>';
+				 	row.Lat = geo.lat;
+				 	row.Lng = geo.lng;
+				 		 	
+				 	// console.log(i + row.Id + ' ' + row.Lat + ' ' + row.Lng);
+   		
+				 	//fusion_insert(table_id, row, function(body) {
+					//	 console.log(body);
+				 	//});
+			 	});
+			 	*/			 	
+
 			
 			}
 /*
@@ -164,17 +188,18 @@ function str2geo(row, callback) {
 		country: 'EE',
 		featureCode: 'PPL',  
 	});
-	console.log(url);
 	
+	return callback({g: row.Id});
+
+	/*
 	request({url:url,json:true}, function (error, response, body) {
 		if (!error && response.statusCode == 200) {
 			lat = body.geonames[0].lat;
 			lng = body.geonames[0].lng;
-			// console.log(body);
-			return callback({lat: lat, lng: lng});
+			return callback({lat: lat, lng: lng, geoId: row.Id});
 		}
 	});
-
+	*/
 }
 
 function fusion_sql(sql, callback) {
