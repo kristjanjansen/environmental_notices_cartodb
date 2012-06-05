@@ -108,12 +108,10 @@ scraper(
 			 			 '<Point><coordinates>' + g.lat +',' + g.lng +'</coordinates></Point>';
 			 	 	row.Lat = g.lat;
 			 	 	row.Lng = g.lng;
-			 	 	
-			 	 	console.log(g);
-			 	 	
-				 	// fusion_insert(table_id, row, function(body) {
-					//	console.log(body);
-				 	// });
+			 	 				 	 	
+				 	fusion_insert(table_id, row, function(body) {
+						console.log(body);
+				 	});
 				 	
 				});
 				
@@ -208,6 +206,7 @@ function fusion_sql(sql, callback) {
 	googleAuth.login();
 
 }
+
 
 function fusion_insert(table_id, row, callback) {
 
