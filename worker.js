@@ -41,20 +41,6 @@ var row  = [];
 var data  = [];
 var keys = [];
 
-
-var fs = require('fs');
-
-var datafile = __dirname+'/data.csv';
-
-fs.stat(datafile, function(err, stat) {
-		if(err == null) {
-			fs.unlink(datafile, function (err) {
-				if (err) throw err;
-			})
-		}
-})
-
-
 // Construct array of URLs to scrape
 
 for (var key in TYPES) {
@@ -101,19 +87,21 @@ scraper(
 				var description_raw = $(this).next().find('td[colspan=4]').text().trim();
 				var description = iconv.convert(new Buffer(description_raw, 'binary')).toString();
 				row.Description = description.substr(0, 30);
-							
+				
+				fusion_insert(table_id, row, function(body) {
+						console.log(body);
+				});
+				
+				/*
 				str2geo(description, function(g) {
 
 			 		row.Geometry = 
 			 			 '<Point><coordinates>' + g.lat +',' + g.lng +'</coordinates></Point>';
 			 	 	row.Lat = g.lat;
-			 	 	row.Lng = g.lng;
-			 	 				 	 	
-				 	fusion_insert(table_id, row, function(body) {
-						console.log(body);
-				 	});
-				 	
+			 	 	row.Lng = g.lng;			 	 				 	 	
+			 	
 				});
+				*/
 				
 			}
 
