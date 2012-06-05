@@ -73,7 +73,9 @@ for (var i=1; i < (MAX_PAGES * 10) + 11 ; i = i + 10) {
 // Main scraper loop, using arrays of URLs
 
 scraper(	
+
 	uris[0], 
+
 	function(err, $) {
 		if (err) {
 			throw err;
@@ -107,9 +109,11 @@ scraper(
 			 	 	row.Lat = g.lat;
 			 	 	row.Lng = g.lng;
 			 	 	
-				 	fusion_insert(table_id, row, function(body) {
-						console.log(body);
-				 	});
+			 	 	console.log(g);
+			 	 	
+				 	// fusion_insert(table_id, row, function(body) {
+					//	console.log(body);
+				 	// });
 				 	
 				});
 				
@@ -190,9 +194,7 @@ function str2geo(str, callback) {
 		country: 'EE',
 		featureCode: 'PPL',  
 	});
-	
-	console.log(id);
-	
+		
 	request({url:url,json:true}, function (error, response, body) {
 		if (!error && response.statusCode == 200) {
 			callback({lat: body.geonames[0].lat, lng: body.geonames[0].lng});
