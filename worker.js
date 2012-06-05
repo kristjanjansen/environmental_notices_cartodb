@@ -100,7 +100,7 @@ scraper(
 				var description = iconv.convert(new Buffer(description_raw, 'binary')).toString();
 				row.Description = description.substr(0, 30);
 							
-				str2geo(description, row.Id, function(g) {
+				str2geo(description, function(g) {
 
 			 		row.Geometry = 
 			 			 '<Point><coordinates>' + g.lat +',' + g.lng +'</coordinates></Point>';
@@ -177,7 +177,7 @@ function array2url(values) {
 
 // Function to convert string to lat/lon coordinates
 
-function str2geo(str, id, callback) {
+function str2geo(str, callback) {
 
 	var url = 'http://api.geonames.org/searchJSON?' + array2url({
 		q: str.replace(/ /gi, ','),
