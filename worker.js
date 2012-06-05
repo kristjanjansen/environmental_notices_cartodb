@@ -117,54 +117,15 @@ scraper(
 				 	
 				});
 				
-				/*
-				str2geo(row, function(geo) {
-					row.Description = row.Description.substr(0, 200);
-				 		 	
-				 	// console.log(i + row.Id + ' ' + row.Lat + ' ' + row.Lng);
-   		
-
-			 	});
-			 	*/			 	
-
-			
 			}
-/*
-		if (count === 0) {
-			var link = $(this).find('td.right a').attr('href').split('=');
-			row.Id = link[link.length - 1];
-			row.Date = $(this).find('td[width=85]').text().trim();
-			row.Type = $(this).find('td.teateliik').text().trim();
-		}
-		if (count == 1) {
-			var description_raw = $(this).find('td[colspan=4]').text().trim();
-			var description = iconv.convert(new Buffer(description_raw, 'binary')).toString();
-			row.Description = description;
-		}
-		if (count == 2) { 
-			str2geo(row, function(geo) {
-				row.Description = row.Description.substr(0, 200);
-				 row.Geometry = 
-					 '<Point><coordinates>' + geo.lat +',' + geo.lng +'</coordinates></Point>';
-				 row.Lat = geo.lat;
-				 row.Lng = geo.lng;	   		
-				 fusion_insert(table_id, row, function(body) {
-					 console.log(body);
-				 });
-			 });
-
-			row = [];
-			count = -1;
-		}
-
-		count++;
-*/
 
 	});
 
 },
 {
-//	'reqPerSec': 0.1
+
+	//	'reqPerSec': 0.1
+
 });
 
 
