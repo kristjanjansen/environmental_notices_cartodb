@@ -99,25 +99,27 @@ scraper(
 				var description_raw = $(this).next().find('td[colspan=4]').text().trim();
 				var description = iconv.convert(new Buffer(description_raw, 'binary')).toString();
 				row.Description = description.substr(0, 30);
-			
-			   console.log(i + row.Id);
-				
-				str2geo(row, function(geo) {
+							
+				str2geo(description, row.Id, function(g) {
+
+			 		row.Geometry = 
+			 			 '<Point><coordinates>' + g.lat +',' + g.lng +'</coordinates></Point>';
+			 	 	row.Lat = g.lat;
+			 	 	row.Lng = g.lng;
+			 	 	
+				 	fusion_insert(table_id, row, function(body) {
+						console.log(body);
+				 	});
+				 	
 				});
 				
 				/*
 				str2geo(row, function(geo) {
 					row.Description = row.Description.substr(0, 200);
-				 	row.Geometry = 
-						 '<Point><coordinates>' + geo.lat +',' + geo.lng +'</coordinates></Point>';
-				 	row.Lat = geo.lat;
-				 	row.Lng = geo.lng;
 				 		 	
 				 	// console.log(i + row.Id + ' ' + row.Lat + ' ' + row.Lng);
    		
-				 	//fusion_insert(table_id, row, function(body) {
-					//	 console.log(body);
-				 	//});
+
 			 	});
 			 	*/			 	
 
@@ -172,12 +174,13 @@ function array2url(values) {
 	return url.join('&');
 }
 
-// Function to convert address string to lat/lon coordinates
 
-function str2geo(row, callback) {
+// Function to convert string to lat/lon coordinates
+
+function str2geo(str, id, callback) {
 
 	var url = 'http://api.geonames.org/searchJSON?' + array2url({
-		q: row.Description.replace(/ /gi, ','),
+		q: str.replace(/ /gi, ','),
 		username: USERNAME,
 		operator: 'OR',
 		formatted: 'true',
@@ -188,20 +191,20 @@ function str2geo(row, callback) {
 		featureCode: 'PPL',  
 	});
 	
-// 	return callback({g: row.Id});
-
-	
+	console.log(id);
 	
 	request({url:url,json:true}, function (error, response, body) {
 		if (!error && response.statusCode == 200) {
-			lat = body.geonames[0].lat;
-			lng = body.geonames[0].lng;
-			console.log('Req: ' + row.Id);
-			// return callback({lat: lat, lng: lng, geoId: row.Id});
+			callback({lat: body.geonames[0].lat, lng: body.geonames[0].lng});
 		}
 	});
 	
 }
+
+
+
+
+
 
 function fusion_sql(sql, callback) {
 
