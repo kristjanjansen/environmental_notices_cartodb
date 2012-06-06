@@ -69,7 +69,6 @@ scraper(
 
 	var count = 0;
 
-	var row = {};
 	
 	var a = '';
 	var b = [];
@@ -78,7 +77,10 @@ scraper(
 			
 			// Getting every third row of the table
 			
+
 			if (i % 3 == 0) {
+
+				var row = {};
 			
 				row.Type = $(this).find('td.teateliik').text().trim();
 				var link = $(this).find('td.right a').attr('href').split('=');
@@ -86,7 +88,8 @@ scraper(
 			
 				var description_raw = $(this).next().find('td[colspan=4]').text().trim();
 				var description = iconv.convert(new Buffer(description_raw, 'binary')).toString();
-				row.Description = description.substr(0, 30);
+				// row.Description = description.substr(0, 30);
+				row.Description = description;
 	
 				var url = 'http://api.geonames.org/searchJSON?' + array2url({
 					q: description.replace(/ /gi, ','),
@@ -102,19 +105,19 @@ scraper(
 				
 				// console.log(url);
 				
-				str2geo(description, row, function(g) {
-					console.log(g);
-				});
+				// str2geo(description, row, function(g) {
+					// console.log(g);
+				// });
 				
-				/*
+				
 				request({url:url, json:true}, function (error, response, body) {
 					if (!error && response.statusCode == 200) {
-					  // console.log(row);
+					  //console.log(row);
 						//callback({lat: body.geonames[0].lat, lng: body.geonames[0].lng});
-						// console.log(body.geonames[0].toponymName + ' ' + body.geonames[0].lat);
+						console.log(row.Id + ' ' + body.geonames[0].toponymName + ' ' + body.geonames[0].lat);
 					}
 				});
-				*/
+				
 				
 				/*			
 				fusion_insert(table_id, row, function(body) {
