@@ -113,11 +113,11 @@ scraper(
 						row.Description = JSON.stringify(body.geonames[0]) + ' ' + row.Description;
 						
 						console.log(row.Id);
-						/*						
-						fusion_insert(table_id, row, function(body) {
-							console.log(body);
+												
+						fusion_insert(table_id, row, function(aaa) {
+							console.log(aaa);
 						});
-						*/
+						
 
 					}
 				});
