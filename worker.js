@@ -87,10 +87,40 @@ scraper(
 				var description_raw = $(this).next().find('td[colspan=4]').text().trim();
 				var description = iconv.convert(new Buffer(description_raw, 'binary')).toString();
 				row.Description = description.substr(0, 30);
+	
+				var url = 'http://api.geonames.org/searchJSON?' + array2url({
+					q: description.replace(/ /gi, ','),
+					username: USERNAME,
+					operator: 'OR',
+					formatted: 'true',
+					maxRows: 1,
+					lang: 'et',
+					style: 'SHORT',
+					country: 'EE',
+					featureCode: 'PPL',  
+				});
 				
+				// console.log(url);
+				
+				str2geo(description, row, function(g) {
+					console.log(g);
+				});
+				
+				/*
+				request({url:url, json:true}, function (error, response, body) {
+					if (!error && response.statusCode == 200) {
+					  // console.log(row);
+						//callback({lat: body.geonames[0].lat, lng: body.geonames[0].lng});
+						// console.log(body.geonames[0].toponymName + ' ' + body.geonames[0].lat);
+					}
+				});
+				*/
+				
+				/*			
 				fusion_insert(table_id, row, function(body) {
 						console.log(body);
 				});
+				*/
 				
 				/*
 				str2geo(description, function(g) {
@@ -128,7 +158,7 @@ function array2url(values) {
 
 // Function to convert string to lat/lon coordinates
 
-function str2geo(str, callback) {
+function str2geo(str, row, callback) {
 
 	var url = 'http://api.geonames.org/searchJSON?' + array2url({
 		q: str.replace(/ /gi, ','),
@@ -141,11 +171,15 @@ function str2geo(str, callback) {
 		country: 'EE',
 		featureCode: 'PPL',  
 	});
+	
+	callback({r:row.Id});
+	// console.log(row);
 		
 	request({url:url,json:true}, function (error, response, body) {
-		if (!error && response.statusCode == 200) {
-			callback({lat: body.geonames[0].lat, lng: body.geonames[0].lng});
-		}
+//		if (!error && response.statusCode == 200) {
+			callback({g: body.geonames[0], row: row});
+			// callback({lat: body.geonames[0].lat, lng: body.geonames[0].lng});
+//		}
 	});
 	
 }
