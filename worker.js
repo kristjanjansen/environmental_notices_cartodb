@@ -56,47 +56,42 @@ for (var i=1; i < (MAX_PAGES * 10) + 11 ; i = i + 10) {
 }
 
 
-// Main scraper loop, using arrays of URLs
 
 fusion_sql('DELETE FROM ' + table_id + ';', function() {
 
+// Main scraper loop, using arrays of URLs
 
 scraper(	
 
 	uris[0], 
 
-	function(err, $) {
-		if (err) {
-			throw err;
+	function(error, $) {
+		if (error) {
+			throw error;
 		}
-
-	var count = 0;
-
-	
-	var a = '';
-	var b = [];
 	
 	$('table[cellpadding=3] tr').each(function(i, item) {
 			
+			// Fetching each third row
 			
 			if (i % 3 == 0) {
 
 				var row = {};
 			
         var link = $(this).find('td.right a').attr('href').split('=');
+	
 				row.Id = link[link.length - 1];
-				
-				row.Date = '';
-				
+        row.Date = $(this).find('td[width=85]').text().trim();
 				row.Type = $(this).find('td.teateliik').text().trim();
-
-			
+		
 				var description_raw = $(this).next().find('td[colspan=4]').text().trim();
 				row.Description = iconv.convert(new Buffer(description_raw, 'binary')).toString();
 
         row.Category = '';
         row.CategoryId = '';
-        	
+        
+        // Quering Geonames to extract geocoordinates from description
+        
 				var url = 'http://api.geonames.org/searchJSON?' + array2url({
 					q: row.Description.replace(/ /gi, ','),
 					username: USERNAME,
@@ -108,77 +103,35 @@ scraper(
 					country: 'EE',
 					featureCode: 'PPL',  
 				});
-								
+				
 				request({url:url, json:true}, function (error, response, body) {
+					
+					if (error) {
+					  throw error;
+					}
 					
 					if (!error && response.statusCode == 200) {
 
-                row.Lat = body.geonames[0].lat;
-                row.Lng = body.geonames[0].lng;
-                row.Geometry = 
-                  '<Point><coordinates>' + 
-                  body.geonames[0].lat +
-                  ',' + 
-                  body.geonames[0].lng +
-                  '</coordinates></Point>';
-						    row.Description = 
-						      body.geonames[0].toponymName + 
-						      ': ' + 
-						      row.Description.substr(0, 300);
+             row.Lat = body.geonames[0].lat;
+             row.Lng = body.geonames[0].lng;
+             row.Geometry = 
+               '<Point><coordinates>' + 
+               body.geonames[0].lat +
+               ',' + 
+               body.geonames[0].lng +
+               '</coordinates></Point>';
+						  row.Description = 
+						    body.geonames[0].toponymName + 
+						    ': ' + 
+						    row.Description.substr(0, 300);
 
-            fusion_insert(table_id, row, function(body) {
-						  console.log(body);
-						});
-/*										
-var sql = 
-  "INSERT INTO " + 
-  table_id + 
-  "(Id, Date, Type, Description, Geometry, Category, CategoryId, Lat, Lng) VALUES ('" + 
-  row.Id + 
-  "', '" + 
-  row.Date + 
-  "', '" + 
-  row.Type + 
-  "', '" + 
-  row.Description + 
-  "', '" + 
-  row.Geometry + 
-  "', '" + 
-  row.Category + 
-  "', '" + 
-  row.CategoryId + 
-  "', '" + 
-  row.Lat + 
-  "', '" + 
-  row.Lng + 
-  "')";
-  */
-/*
-var sql = 
-  "INSERT INTO " + 
-  table_id + 
-  "(Id, Type, Description, Lat, Lng) VALUES ('" +
-  row.Id + 
-  "', '" + 
-  row.Type + 
-  "', '" + 
-  row.Description + 
-  "', '" + 
-  row.Lat +
-  "', '" + 
-  row.Lng +
-  "')";
-*/
-/*
-fusion_sql(sql, function(body) {
-    console.log(body);
-});
-*/					
-						/*						
-						fusion_insert(table_id, row, function(aaa) {
-							console.log(aaa);
-						});
-						*/
+              // Inserting row to Google Fusion table
+
+              fusion_insert(table_id, row, function(body) {
+				
+						    // console.log(body);
+				
+						  });
 
 					}
 				});
@@ -196,6 +149,7 @@ fusion_sql(sql, function(body) {
 
 });
 
+
 // Utility function to convert keyed array to URL components
 
 function array2url(values) {
@@ -208,7 +162,7 @@ function array2url(values) {
 
 
 
-// Utility function to make a SQL query to Google Fusion table
+// Utility function to make a SQL query to a Google Fusion table
 
 function fusion_sql(sql, callback) {
 
