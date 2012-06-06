@@ -122,9 +122,9 @@ scraper(
                   body.geonames[0].lng +
                   '</coordinates></Point>';
 						    row.Description = 
-						      JSON.stringify(body.geonames[0]) + 
-						      ' ' + 
-						      row.Description.substr(0, 100);
+						      body.geonames[0].toponymName + 
+						      ': ' + 
+						      row.Description.substr(0, 300);
 						
 var sql = 
   "INSERT INTO " + 
