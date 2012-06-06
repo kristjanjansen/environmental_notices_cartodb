@@ -129,7 +129,7 @@ scraper(
             fusion_insert(table_id, row, function(body) {
 						  console.log(body);
 						});
-											
+/*										
 var sql = 
   "INSERT INTO " + 
   table_id + 
@@ -152,6 +152,7 @@ var sql =
   "', '" + 
   row.Lng + 
   "')";
+  */
 /*
 var sql = 
   "INSERT INTO " + 
@@ -168,10 +169,11 @@ var sql =
   row.Lng +
   "')";
 */
+/*
 fusion_sql(sql, function(body) {
     console.log(body);
 });
-						
+*/					
 						/*						
 						fusion_insert(table_id, row, function(aaa) {
 							console.log(aaa);
