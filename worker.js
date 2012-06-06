@@ -83,13 +83,20 @@ scraper(
 
 				var row = {};
 			
-				row.Type = $(this).find('td.teateliik').text().trim();
-				var link = $(this).find('td.right a').attr('href').split('=');
+        var link = $(this).find('td.right a').attr('href').split('=');
 				row.Id = link[link.length - 1];
+				
+				row.Date = '';
+				
+				row.Type = $(this).find('td.teateliik').text().trim();
+
 			
 				var description_raw = $(this).next().find('td[colspan=4]').text().trim();
 				row.Description = iconv.convert(new Buffer(description_raw, 'binary')).toString();
-	
+
+        row.Category = '';
+        row.CategoryId = '';
+        	
 				var url = 'http://api.geonames.org/searchJSON?' + array2url({
 					q: row.Description.replace(/ /gi, ','),
 					username: USERNAME,
@@ -106,18 +113,61 @@ scraper(
 					
 					if (!error && response.statusCode == 200) {
 
-			 		 	row.Lat = body.geonames[0].lat;
-			 		 	row.Lng = body.geonames[0].lng;	
-			 		 	row.Geometry = 
-			 				 '<Point><coordinates>' + body.geonames[0].lat +',' + body.geonames[0].lng +'</coordinates></Point>';
-						row.Description = JSON.stringify(body.geonames[0]) + ' ' + row.Description;
+                row.Lat = body.geonames[0].lat;
+                row.Lng = body.geonames[0].lng;
+                row.Geometry = 
+                '<Point><coordinates>' + body.geonames[0].lat +',' + body.geonames[0].lng +'</coordinates></Point>';
+//						    row.Description = JSON.stringify(body.geonames[0]) + ' ' + row.Description;
 						
-						console.log(row.Id);
-												
+//						console.log(row);
+
+var sql = 
+  "INSERT INTO " + 
+  table_id + 
+  "(Id, Date, Type, Description, Geometry, Category, CategoryId, Lat, Lng) VALUES ('" + 
+  row.Id + 
+  "', '" + 
+  row.Date + 
+  "', '" + 
+  row.Type + 
+  "', '" + 
+  row.Description + 
+  "', '" + 
+  row.Geometry + 
+  "', '" + 
+  row.Category + 
+  "', '" + 
+  row.CategoryId + 
+  "', '" + 
+  row.Lat + 
+  "', '" + 
+  row.Lng + 
+  "')";
+
+var sql = 
+  "INSERT INTO " + 
+  table_id + 
+  "(Id, Type, Description, Lat, Lng) VALUES ('" +
+  row.Id + 
+  "', '" + 
+  row.Type + 
+  "', '" + 
+  row.Description + 
+  "', '" + 
+  row.Lat +
+  "', '" + 
+  row.Lng +
+  "')";
+
+fusion_sql(sql, function(body) {
+    console.log(body);
+});
+						
+						/*						
 						fusion_insert(table_id, row, function(aaa) {
 							console.log(aaa);
 						});
-						
+						*/
 
 					}
 				});
@@ -179,6 +229,7 @@ function fusion_sql(sql, callback) {
 			}			
 			}, function (err, response, body) { 
 				if (!err && response.statusCode == 200) {
+  				console.log(body);
 					return callback(body);
 				}
 			});
@@ -198,7 +249,7 @@ function fusion_insert(table_id, row, callback) {
 	var sql_values = "";
 
 	for(var key in row) {
-		sql_keys += key + ', ';
+		sql_keys += key + ", ";
 		sql_values += "'" + row[key] + "', ";
 	}
 
