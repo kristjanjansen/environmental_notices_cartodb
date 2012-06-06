@@ -58,6 +58,9 @@ for (var i=1; i < (MAX_PAGES * 10) + 11 ; i = i + 10) {
 
 // Main scraper loop, using arrays of URLs
 
+fusion_sql('DELETE FROM ' + table_id + ';', function() {
+
+
 scraper(	
 
 	uris[0], 
@@ -75,9 +78,7 @@ scraper(
 	
 	$('table[cellpadding=3] tr').each(function(i, item) {
 			
-			// Getting every third row of the table
 			
-
 			if (i % 3 == 0) {
 
 				var row = {};
@@ -87,11 +88,10 @@ scraper(
 				row.Id = link[link.length - 1];
 			
 				var description_raw = $(this).next().find('td[colspan=4]').text().trim();
-				var description = iconv.convert(new Buffer(description_raw, 'binary')).toString();
-				row.Description = description;
+				row.Description = iconv.convert(new Buffer(description_raw, 'binary')).toString();
 	
 				var url = 'http://api.geonames.org/searchJSON?' + array2url({
-					q: description.replace(/ /gi, ','),
+					q: row.Description.replace(/ /gi, ','),
 					username: USERNAME,
 					operator: 'OR',
 					formatted: 'true',
@@ -112,9 +112,8 @@ scraper(
 			 				 '<Point><coordinates>' + body.geonames[0].lat +',' + body.geonames[0].lng +'</coordinates></Point>';
 						row.Description = JSON.stringify(body.geonames[0]) + ' ' + row.Description;
 						
-						console.log(row);
-						
-						/*
+						console.log(row.Id);
+						/*						
 						fusion_insert(table_id, row, function(body) {
 							console.log(body);
 						});
@@ -122,25 +121,7 @@ scraper(
 
 					}
 				});
-				
-				
-				/*			
-				fusion_insert(table_id, row, function(body) {
-						console.log(body);
-				});
-				*/
-				
-				/*
-				str2geo(description, function(g) {
-
-			 		row.Geometry = 
-			 			 '<Point><coordinates>' + g.lat +',' + g.lng +'</coordinates></Point>';
-			 	 	row.Lat = g.lat;
-			 	 	row.Lng = g.lng;			 	 				 	 	
-			 	
-				});
-				*/
-				
+												
 			}
 
 	});
@@ -152,6 +133,7 @@ scraper(
 
 });
 
+});
 
 // Utility function to convert keyed array to URL components
 
@@ -164,38 +146,8 @@ function array2url(values) {
 }
 
 
-// Function to convert string to lat/lon coordinates
 
-function str2geo(str, row, callback) {
-
-	var url = 'http://api.geonames.org/searchJSON?' + array2url({
-		q: str.replace(/ /gi, ','),
-		username: USERNAME,
-		operator: 'OR',
-		formatted: 'true',
-		maxRows: 1,
-		lang: 'et',
-		style: 'SHORT',
-		country: 'EE',
-		featureCode: 'PPL',  
-	});
-	
-	callback({r:row.Id});
-	// console.log(row);
-		
-	request({url:url,json:true}, function (error, response, body) {
-//		if (!error && response.statusCode == 200) {
-			callback({g: body.geonames[0], row: row});
-			// callback({lat: body.geonames[0].lat, lng: body.geonames[0].lng});
-//		}
-	});
-	
-}
-
-
-
-
-
+// Utility function to make a SQL query to Google Fusion table
 
 function fusion_sql(sql, callback) {
 
@@ -237,6 +189,8 @@ function fusion_sql(sql, callback) {
 
 }
 
+
+// Utility function to make a INSERT query to Google Fusion table
 
 function fusion_insert(table_id, row, callback) {
 
