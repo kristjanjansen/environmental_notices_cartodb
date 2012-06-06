@@ -125,7 +125,11 @@ scraper(
 						      body.geonames[0].toponymName + 
 						      ': ' + 
 						      row.Description.substr(0, 300);
-						
+
+            fusion_insert(table_id, row, function(body) {
+						  console.log(body);
+						});
+											
 var sql = 
   "INSERT INTO " + 
   table_id + 
