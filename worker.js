@@ -6,7 +6,7 @@ var csv = require('csv');
 
 var iconv = new Iconv('ISO-8859-15', 'UTF-8');
 
-var MAX_PAGES = 1;
+var MAX_PAGES = 2;
 var USERNAME = 'keskkonnateated';
 
 var table_id = '1RHc5WYocfri-0qxY8ragYxObAGXLUxBK-hRQ4vg';
@@ -47,7 +47,7 @@ for (var key in TYPES) {
 	keys.push(key);
 }
 
-for (var i=1; i < (MAX_PAGES * 10) + 11 ; i = i + 10) {
+for (var i=1; i < ((MAX_PAGES - 1) * 10) + 11 ; i = i + 10) {
 	uris.push(
 		{
 			'uri' : 'http://www.ametlikudteadaanded.ee/index.php?act=1&salguskpvavald=' + Date.today().addMonths(-1).toFormat('DD.MM.YYYY') + '&sloppkpvavald=' + Date.today().toFormat('DD.MM.YYYY') + '&steateliigid=' + keys.join(';') + '&srange=' + i + '-' + (i + 9), 
@@ -56,14 +56,13 @@ for (var i=1; i < (MAX_PAGES * 10) + 11 ; i = i + 10) {
 }
 
 
-
 fusion_sql('DELETE FROM ' + table_id + ';', function() {
 
 // Main scraper loop, using arrays of URLs
 
 scraper(	
 
-	uris[0], 
+	uris, 
 
 	function(error, $) {
 		if (error) {
@@ -193,7 +192,6 @@ function fusion_sql(sql, callback) {
 				'Authorization': 'GoogleLogin auth=' + googleAuth.getAuthId()
 			}			
 			}, function (err, response, body) { 
-  			console.log(body);
 				if (!err && response.statusCode == 200) {
 					return callback(body);
 				}
@@ -233,3 +231,4 @@ function fusion_insert(table_id, row, callback) {
 	});
 
 }
+
