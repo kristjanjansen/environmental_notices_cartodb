@@ -2,13 +2,12 @@ require('date-utils');
 var scraper = require('scraper');
 var Iconv  = require('iconv').Iconv;
 var request = require('request');
-var csv = require('csv');
 
 var iconv = new Iconv('ISO-8859-15', 'UTF-8');
 
-var MAX_PAGES = 2;
-var USERNAME = 'keskkonnateated';
+var MAX_PAGES = 15;
 
+var USERNAME = 'keskkonnateated';
 var table_id = '1RHc5WYocfri-0qxY8ragYxObAGXLUxBK-hRQ4vg';
 
 TYPES = {
@@ -95,12 +94,12 @@ scraper(
 					q: row.Description.replace(/ /gi, ','),
 					username: USERNAME,
 					operator: 'OR',
-					formatted: 'true',
 					maxRows: 1,
-					lang: 'et',
+          fuzzy: 1,
 					style: 'SHORT',
 					country: 'EE',
-					featureCode: 'PPL',  
+					featureClass: 'P',  
+ 					lang: 'et',
 				});
 				
 				request({url:url, json:true}, function (error, response, body) {
@@ -110,27 +109,27 @@ scraper(
 					}
 					
 					if (!error && response.statusCode == 200) {
-
-             row.Lat = body.geonames[0].lat;
-             row.Lng = body.geonames[0].lng;
+						 
+             row.Lat = ((body.geonames[0].lat * 200 + ((Math.random() * 200) + 1) / 200)) / 200 ;
+             row.Lng = ((body.geonames[0].lng * 200 + ((Math.random() * 200) + 1) / 200)) / 200 ;
              row.Geometry = 
                '<Point><coordinates>' + 
-               body.geonames[0].lat +
+               row.Lat +
                ',' + 
-               body.geonames[0].lng +
+               row.Lng +
                '</coordinates></Point>';
 						  row.Description = 
 						    body.geonames[0].toponymName + 
 						    ': ' + 
 						    row.Description.substr(0, 300);
+							              	
+              	// Inserting row to Google Fusion table
 
-              // Inserting row to Google Fusion table
-
-              fusion_insert(table_id, row, function(body) {
+	              fusion_insert(table_id, row, function(body) {
 				
-						    // console.log(body);
+						    //	console.log(body);
 				
-						  });
+						  	});
 
 					}
 				});
