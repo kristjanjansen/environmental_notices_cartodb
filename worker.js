@@ -2,6 +2,7 @@ require('date-utils');
 var scraper = require('scraper');
 var Iconv  = require('iconv').Iconv;
 var request = require('request');
+var GoogleClientLogin = require('googleclientlogin').GoogleClientLogin;
 
 var iconv = new Iconv('ISO-8859-15', 'UTF-8');
 
@@ -110,8 +111,13 @@ scraper(
 					
 					if (!error && response.statusCode == 200) {
 						 
-             row.Lat = ((body.geonames[0].lat * 200 + ((Math.random() * 200) + 1) / 200)) / 200 ;
-             row.Lng = ((body.geonames[0].lng * 200 + ((Math.random() * 200) + 1) / 200)) / 200 ;
+             row.Lat = (
+	             (body.geonames[0].lat * 100 + 
+	             ((Math.random() * 100) + 1) / 100)
+	             ) / 100 ;
+             row.Lng = ((body.geonames[0].lng * 100 + 
+	             ((Math.random() * 100) + 1) / 100)
+	             ) / 100 ;
              row.Geometry = 
                '<Point><coordinates>' + 
                row.Lat +
@@ -173,7 +179,6 @@ function fusion_sql(sql, callback) {
 		key: api_key 
 	});
 
-	var GoogleClientLogin = require('googleclientlogin').GoogleClientLogin;
 	var googleAuth = new GoogleClientLogin({
 		email: email,
 		password: password,
