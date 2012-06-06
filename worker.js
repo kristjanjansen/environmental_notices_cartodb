@@ -116,11 +116,16 @@ scraper(
                 row.Lat = body.geonames[0].lat;
                 row.Lng = body.geonames[0].lng;
                 row.Geometry = 
-                '<Point><coordinates>' + body.geonames[0].lat +',' + body.geonames[0].lng +'</coordinates></Point>';
-//						    row.Description = JSON.stringify(body.geonames[0]) + ' ' + row.Description;
+                  '<Point><coordinates>' + 
+                  body.geonames[0].lat +
+                  ',' + 
+                  body.geonames[0].lng +
+                  '</coordinates></Point>';
+						    row.Description = 
+						      JSON.stringify(body.geonames[0]) + 
+						      ' ' + 
+						      row.Description.substr(0, 100);
 						
-//						console.log(row);
-
 var sql = 
   "INSERT INTO " + 
   table_id + 
@@ -143,7 +148,7 @@ var sql =
   "', '" + 
   row.Lng + 
   "')";
-
+/*
 var sql = 
   "INSERT INTO " + 
   table_id + 
@@ -158,7 +163,7 @@ var sql =
   "', '" + 
   row.Lng +
   "')";
-
+*/
 fusion_sql(sql, function(body) {
     console.log(body);
 });
@@ -228,8 +233,8 @@ function fusion_sql(sql, callback) {
 				'Authorization': 'GoogleLogin auth=' + googleAuth.getAuthId()
 			}			
 			}, function (err, response, body) { 
+  			console.log(body);
 				if (!err && response.statusCode == 200) {
-  				console.log(body);
 					return callback(body);
 				}
 			});
