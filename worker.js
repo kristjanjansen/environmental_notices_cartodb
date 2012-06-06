@@ -88,7 +88,6 @@ scraper(
 			
 				var description_raw = $(this).next().find('td[colspan=4]').text().trim();
 				var description = iconv.convert(new Buffer(description_raw, 'binary')).toString();
-				// row.Description = description.substr(0, 30);
 				row.Description = description;
 	
 				var url = 'http://api.geonames.org/searchJSON?' + array2url({
@@ -102,19 +101,25 @@ scraper(
 					country: 'EE',
 					featureCode: 'PPL',  
 				});
-				
-				// console.log(url);
-				
-				// str2geo(description, row, function(g) {
-					// console.log(g);
-				// });
-				
-				
+								
 				request({url:url, json:true}, function (error, response, body) {
+					
 					if (!error && response.statusCode == 200) {
-					  //console.log(row);
-						//callback({lat: body.geonames[0].lat, lng: body.geonames[0].lng});
-						console.log(row.Id + ' ' + body.geonames[0].toponymName + ' ' + body.geonames[0].lat);
+
+			 		 	row.Lat = body.geonames[0].lat;
+			 		 	row.Lng = body.geonames[0].lng;	
+			 		 	row.Geometry = 
+			 				 '<Point><coordinates>' + body.geonames[0].lat +',' + body.geonames[0].lng +'</coordinates></Point>';
+						row.Description = JSON.stringify(body.geonames[0]) + ' ' + row.Description;
+						
+						console.log(row);
+						
+						/*
+						fusion_insert(table_id, row, function(body) {
+							console.log(body);
+						});
+						*/
+
 					}
 				});
 				
