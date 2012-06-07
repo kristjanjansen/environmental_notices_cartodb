@@ -41,6 +41,10 @@ var row  = [];
 var data  = [];
 var keys = [];
 
+
+
+var worker = function() {
+
 // Construct array of URLs to scrape
 
 for (var key in TYPES) {
@@ -133,7 +137,7 @@ scraper(
 
 	              fusion_insert(table_id, row, function(body) {
 				
-						    //	console.log(body);
+						    	console.log(body);
 				
 						  	});
 
@@ -152,6 +156,12 @@ scraper(
 });
 
 });
+
+};
+
+exports.worker = worker;
+
+
 
 
 // Utility function to convert keyed array to URL components
