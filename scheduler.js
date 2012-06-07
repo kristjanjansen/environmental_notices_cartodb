@@ -2,7 +2,7 @@ var schedule = require('node-schedule');
 var w = require('./worker');
 
 var rule = new schedule.RecurrenceRule();
-rule.minute = new schedule.Range(0, 60, 1);
+rule.minute = new schedule.Range(0, 60, 5);
 
 // w.worker();
 
