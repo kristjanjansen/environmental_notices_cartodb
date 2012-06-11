@@ -14,6 +14,6 @@
     "iconv": "1.1.x",
     "node-schedule": "0.1.x",
     "request": "2.9.x",
-    "scraper": "https://github.com/kristjanjansen/node-scraper/tarball/master"
+    "scraper": "0.0.9"
   }
 }
