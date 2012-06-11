@@ -2,7 +2,7 @@
   "name": "enno",
   "subdomain": "enno",
   "scripts": {
-    "start": "scheduler.js"
+    "start": "w.js"
   },
   "version": "0.0.0",
   "engines": {
