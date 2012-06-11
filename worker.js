@@ -43,6 +43,9 @@ var data  = [];
 var keys = [];
 
 
+// Main worker to scrape avalikudteadaanded.ee pages, geotagging
+// the results and writing them to Google Fusion database
+
 
 function worker() {
 
@@ -60,10 +63,12 @@ for (var i=1; i < ((MAX_PAGES - 1) * 10) + 11 ; i = i + 10) {
     });
 }
 
+// Deleting previous data
 
 fusion_sql('DELETE FROM ' + table_id + ';', function() {
 
-// Main scraper loop, using arrays of URLs
+
+// Running scraper for each member of uri array
 
 scraper(	
 
@@ -94,7 +99,7 @@ scraper(
         row.Category = '';
         row.CategoryId = '';
 
-        // Quering Geonames to extract geocoordinates from description
+        // Fetching geocoordinates from geonames based on description field
 
         var url = 'http://api.geonames.org/searchJSON?' + array2url({
           q: row.Description.replace(/ /gi, ','),
@@ -245,16 +250,12 @@ function fusion_insert(table_id, row, callback) {
 
 }
 
-// Scheduler
+// Scheduler to launch a worker in every 5 minutes
 
-/*
 var rule = new schedule.RecurrenceRule();
-rule.minute = new schedule.Range(0, 60, 5);
+rule.minute = new schedule.Range(0, 60, 1);
 
 var j = schedule.scheduleJob(rule, function(){
-    console.log('Launching new worker');
+    console.log('Launching worker');
     worker();
 });
-*/
-
-worker();
