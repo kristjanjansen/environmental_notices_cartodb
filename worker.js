@@ -44,7 +44,7 @@ var keys = [];
 
 
 
-var worker = function() {
+function worker() {
 
 // Construct array of URLs to scrape
 
@@ -247,10 +247,14 @@ function fusion_insert(table_id, row, callback) {
 
 // Scheduler
 
+/*
 var rule = new schedule.RecurrenceRule();
-rule.minute = new schedule.Range(0, 60, 1);
+rule.minute = new schedule.Range(0, 60, 5);
 
 var j = schedule.scheduleJob(rule, function(){
-    console.log('Launching new task');
+    console.log('Launching new worker');
     worker();
 });
+*/
+
+worker();
