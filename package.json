@@ -1,4 +1,12 @@
 {
+  "dependencies": {
+    "date-utils": "1.2.x",
+    "googleclientlogin": "0.2.x",
+    "iconv": "1.1.x",
+    "node-schedule": "0.1.x",
+    "request": "2.9.x",
+    "scraper": "https://github.com/kristjanjansen/node-scraper/tarball/master"
+  },
   "name": "environmental_notices_node",
   "subdomain": "environmental_notices_node",
   "scripts": {
@@ -7,13 +15,5 @@
   "version": "0.0.0",
   "engines": {
     "node": "0.6.x"
-  },
-  "dependencies": {
-    "date-utils": "1.2.x",
-    "googleclientlogin": "0.2.x",
-    "iconv": "1.1.x",
-    "node-schedule": "0.1.x",
-    "request": "2.9.x",
-    "scraper": "0.0.9"
   }
 }
