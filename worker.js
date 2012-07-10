@@ -261,6 +261,4 @@ var j = schedule.scheduleJob(rule, function(){
 });
 */
 
-// worker();
-
-console.log('hello');
+worker();
