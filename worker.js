@@ -250,10 +250,10 @@ function fusion_insert(table_id, row, callback) {
 
 }
 
-// Scheduler to launch a worker in every 15 minutes
+// Scheduler to launch a worker in every 10 minutes
   
 var rule = new schedule.RecurrenceRule();
-rule.minute = new schedule.Range(0, 60, 15);
+rule.minute = new schedule.Range(0, 60, 10);
 
 var j = schedule.scheduleJob(rule, function(){
     console.log('Launching worker');
