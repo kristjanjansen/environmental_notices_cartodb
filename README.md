@@ -12,3 +12,5 @@ cd environmental_notices_node
 npm install
 node worker.js
 ```
+
+
