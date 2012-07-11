@@ -260,5 +260,15 @@ var j = schedule.scheduleJob(rule, function(){
     worker();
 });
 
+// Serve app
 
-// worker();
+tako = require('tako');
+path = require('path')
+ 
+app = tako();
+
+app.route('/').file(path.join(__dirname, 'static/index.html'));
+app.route('/static/*').files(path.join(__dirname, 'static'));
+app.route('/config.json').json({GOOGLE_FUSION_ID: table_id});
+
+app.httpServer.listen(8080);

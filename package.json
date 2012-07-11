@@ -6,6 +6,7 @@
     "googleclientlogin": "0.2.x",
     "node-schedule": "0.1.x",
     "request": "2.9.x",
-    "scraper": "0.0.x"
+    "scraper": "0.0.x",
+    "tako": "0.3.x"
   }
 }
