@@ -1,11 +1,11 @@
 require('date-utils');
 var scraper = require('scraper');
-var Iconv  = require('iconv').Iconv;
+// var Iconv  = require('iconv').Iconv;
 var request = require('request');
 var GoogleClientLogin = require('googleclientlogin').GoogleClientLogin;
 var schedule = require('node-schedule');
 
-var iconv = new Iconv('ISO-8859-15', 'UTF-8');
+// var iconv = new Iconv('ISO-8859-15', 'UTF-8');
 
 var MAX_PAGES = 15;
 
@@ -94,8 +94,8 @@ scraper(
         row.Type = $(this).find('td.teateliik').text().trim();
 
         var description_raw = $(this).next().find('td[colspan=4]').text().trim();
-        row.Description = iconv.convert(new Buffer(description_raw, 'binary')).toString();
-
+//        row.Description = iconv.convert(new Buffer(description_raw, 'binary')).toString();
+        row.Description = description_raw;
         row.Category = '';
         row.CategoryId = '';
 
