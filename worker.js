@@ -9,14 +9,11 @@ var schedule = require('node-schedule');
 
 var MAX_PAGES = 15;
 
-var geonames_username = process.env.GEONAMES_USERNAME;
-
 var google_fusion_table_id = process.env.GOOGLE_FUSION_TABLE_ID;
 var google_fusion_apikey = process.env.GOOGLE_FUSION_APIKEY;
 var google_username = process.env.GOOGLE_USERNAME
 var google_password = process.env.GOOGLE_PASSWORD
-
-// '1RHc5WYocfri-0qxY8ragYxObAGXLUxBK-hRQ4vg';
+var geonames_username = process.env.GEONAMES_USERNAME;
 
 TYPES = {
     '580082': 'Geneetiliselt muundatud organismide keskkonda viimise teated',
@@ -190,12 +187,6 @@ function array2url(values) {
 
 function fusion_sql(sql, callback) {
 
-/*
-  var google_fusion_apikey = 'AIzaSyBXyUdnzaES3vqQluaE6f2UIswT1YExFB4';
-  var email = 'keskkonnateated@gmail.com';
-  var password = 'teatedkonnakesk';
-*/
-
   var url = 'https://www.googleapis.com/fusiontables/v1/query?' + array2url({
     sql: sql,
     key: google_fusion_apikey 
@@ -269,7 +260,7 @@ var j = schedule.scheduleJob(rule, function(){
 });
 
 
-worker();
+// worker();
 
 // Serve app
 
