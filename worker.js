@@ -9,8 +9,14 @@ var schedule = require('node-schedule');
 
 var MAX_PAGES = 15;
 
-var USERNAME = 'keskkonnateated';
-var table_id = '1RHc5WYocfri-0qxY8ragYxObAGXLUxBK-hRQ4vg';
+var geonames_username = process.env.GEONAMES_USERNAME;
+
+var google_fusion_table_id = process.env.GOOGLE_FUSION_TABLE_ID;
+var google_fusion_apikey = process.env.GOOGLE_FUSION_APIKEY;
+var google_username = process.env.GOOGLE_USERNAME
+var google_password = process.env.GOOGLE_PASSWORD
+
+// '1RHc5WYocfri-0qxY8ragYxObAGXLUxBK-hRQ4vg';
 
 TYPES = {
     '580082': 'Geneetiliselt muundatud organismide keskkonda viimise teated',
@@ -65,7 +71,7 @@ for (var i=1; i < ((MAX_PAGES - 1) * 10) + 11 ; i = i + 10) {
 
 // Deleting previous data
 
-fusion_sql('DELETE FROM ' + table_id + ';', function() {
+fusion_sql('DELETE FROM ' + google_fusion_table_id + ';', function() {
 
 
 // Running scraper for each member of uri array
@@ -103,7 +109,7 @@ scraper(
 
         var url = 'http://api.geonames.org/searchJSON?' + array2url({
           q: row.Description.replace(/ /gi, ','),
-          username: USERNAME,
+          username: geonames_username,
           operator: 'OR',
           maxRows: 1,
           fuzzy: 1,
@@ -141,7 +147,7 @@ scraper(
 
                 // Inserting row to Google Fusion table
 
-                fusion_insert(table_id, row, function(body) {
+                fusion_insert(google_fusion_table_id, row, function(body) {
 
                   console.log(body);
 
@@ -184,18 +190,20 @@ function array2url(values) {
 
 function fusion_sql(sql, callback) {
 
-  var api_key = 'AIzaSyBXyUdnzaES3vqQluaE6f2UIswT1YExFB4';
+/*
+  var google_fusion_apikey = 'AIzaSyBXyUdnzaES3vqQluaE6f2UIswT1YExFB4';
   var email = 'keskkonnateated@gmail.com';
   var password = 'teatedkonnakesk';
+*/
 
   var url = 'https://www.googleapis.com/fusiontables/v1/query?' + array2url({
     sql: sql,
-    key: api_key 
+    key: google_fusion_apikey 
   });
 
   var googleAuth = new GoogleClientLogin({
-    email: email,
-    password: password,
+    email: google_username + '@gmail.com',
+    password: google_password,
     service: 'fusiontables',
     accountType: GoogleClientLogin.accountTypes.google
   });
@@ -224,7 +232,7 @@ function fusion_sql(sql, callback) {
 
 // Utility function to make a INSERT query to Google Fusion table
 
-function fusion_insert(table_id, row, callback) {
+function fusion_insert(google_fusion_table_id, row, callback) {
 
   var sql_keys = "";
   var sql_values = "";
@@ -236,7 +244,7 @@ function fusion_insert(table_id, row, callback) {
 
   var sql = 
     "INSERT INTO " + 
-    table_id +
+    google_fusion_table_id +
     " (" +
     sql_keys.substr(0, sql_keys.length - 2) +
     ") VALUES (" +
@@ -251,14 +259,17 @@ function fusion_insert(table_id, row, callback) {
 }
 
 // Scheduler to launch a worker in every 15 minutes
-  
+
 var rule = new schedule.RecurrenceRule();
-rule.minute = new schedule.Range(0, 60, 15);
+rule.minute = new schedule.Range(0, 60, 10);
 
 var j = schedule.scheduleJob(rule, function(){
     console.log('Launching worker');
     worker();
 });
+
+
+// worker();
 
 // Serve app
 
@@ -269,6 +280,6 @@ app = tako();
 
 app.route('/').file(path.join(__dirname, 'static/index.html'));
 app.route('/static/*').files(path.join(__dirname, 'static'));
-app.route('/config.json').json({GOOGLE_FUSION_ID: table_id});
+app.route('/config.json').json({GOOGLE_FUSION_TABLE_ID: google_fusion_table_id});
 
 app.httpServer.listen(8080);
