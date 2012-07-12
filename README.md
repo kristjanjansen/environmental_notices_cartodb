@@ -1,6 +1,6 @@
 ## About 
 
-This is the port of https://github.com/kristjanjansen/environmental_notices to Node.js
+This is the port of https://github.com/kristjanjansen/environmental_notices_old to Node.js
 
 ## Installing
 
