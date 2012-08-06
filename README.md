@@ -15,7 +15,7 @@ npm install
 ## Running
 
 ```
-sudo GOOGLE_FUSION_TABLE_ID=your_google_fusion_table_id GOOGLE_FUSION_APIKEY=your_google_fusion_apikey GOOGLE_USERNAME=your_google_username GOOGLE_PASSWORD=your_google_password GEONAMES_USERNAME=your_geonames_username node worker.js
+GOOGLE_FUSION_TABLE_ID=your_google_fusion_table_id GOOGLE_FUSION_APIKEY=your_google_fusion_apikey GOOGLE_USERNAME=your_google_username GOOGLE_PASSWORD=your_google_password GEONAMES_USERNAME=your_geonames_username node worker.js
 ```
 
 
