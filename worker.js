@@ -260,7 +260,7 @@ var j = schedule.scheduleJob(rule, function(){
 });
 
 
-// worker();
+worker();
 
 // Serve app
 
