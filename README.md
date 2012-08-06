@@ -7,8 +7,8 @@ This is the port of https://github.com/kristjanjansen/environmental_notices_old 
 This script assumes you have ```node``` and ```npm``` installed.
 
 ```
-git clone https://github.com/kristjanjansen/environmental_notices_node
-cd environmental_notices_node
+git clone https://github.com/kristjanjansen/environmental_notices
+cd environmental_notices
 npm install
 node worker.js
 ```
