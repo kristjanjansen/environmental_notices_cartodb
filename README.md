@@ -12,10 +12,36 @@ cd environmental_notices
 npm install
 ```
 
+## Config
+
+1. Create /config directory
+2. Create /config/development.json file with following contents (replace "" with your values):
+
+```
+{
+  "googleFusionTableID": "",
+  "googleFusionTableApikey": "",
+  "googleUsername": "",
+  "googlePassword": "",
+  "geonamesUsername": "",
+  "httpPort": 8888,
+  "updateRate": 10
+}
+```
+
 ## Running
 
 ```
-GOOGLE_FUSION_TABLE_ID=your_google_fusion_table_id GOOGLE_FUSION_APIKEY=your_google_fusion_apikey GOOGLE_USERNAME=your_google_username GOOGLE_PASSWORD=your_google_password GEONAMES_USERNAME=your_geonames_username node worker.js
+node worker.js
 ```
 
+## Running in production
+
+1. Install [Forever](https://github.com/nodejitsu/forever) (optional but highly reccommended).
+1. Create /config/production.json and fill with proper configuration.
+2. Run
+
+```
+NODE_ENV=production forever node worker.js
+```
 
