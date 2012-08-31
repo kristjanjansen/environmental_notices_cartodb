@@ -1,3 +1,4 @@
+var CONFIG = require('config');
 require('date-utils');
 var scraper = require('scraper');
 // var Iconv  = require('iconv').Iconv;
@@ -9,11 +10,12 @@ var schedule = require('node-schedule');
 
 var MAX_PAGES = 15;
 
-var google_fusion_table_id = process.env.GOOGLE_FUSION_TABLE_ID;
-var google_fusion_apikey = process.env.GOOGLE_FUSION_APIKEY;
-var google_username = process.env.GOOGLE_USERNAME
-var google_password = process.env.GOOGLE_PASSWORD
-var geonames_username = process.env.GEONAMES_USERNAME;
+var google_fusion_table_id = CONFIG.googleFusionTableID;
+var google_fusion_apikey = CONFIG.googleFusionTableApikey;
+var google_username = CONFIG.googleUsername;
+var google_password = CONFIG.googlePassword;
+var geonames_username = CONFIG.geonamesUsername;
+var httpPort = CONFIG.httpPort;
 
 TYPES = {
     '580082': 'Geneetiliselt muundatud organismide keskkonda viimise teated',
@@ -249,10 +251,10 @@ function fusion_insert(google_fusion_table_id, row, callback) {
 
 }
 
-// Scheduler to launch a worker in every 10 minutes
+// Scheduler to launch a worker in every x minutes
 
 var rule = new schedule.RecurrenceRule();
-rule.minute = new schedule.Range(0, 60, 10);
+rule.minute = new schedule.Range(0, 60, (CONFIG.updateRate || 10));
 
 var j = schedule.scheduleJob(rule, function(){
     console.log('Launching worker');
@@ -273,4 +275,4 @@ app.route('/').file(path.join(__dirname, 'static/index.html'));
 app.route('/static/*').files(path.join(__dirname, 'static'));
 app.route('/config.json').json({GOOGLE_FUSION_TABLE_ID: google_fusion_table_id});
 
-app.httpServer.listen(8080);
+app.httpServer.listen(CONFIG.httpPort);
