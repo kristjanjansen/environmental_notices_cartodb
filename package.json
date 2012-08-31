@@ -7,7 +7,7 @@
     "node-schedule": "0.1.x",
     "request": "2.9.x",
     "scraper": "0.0.x",
-    "tako": "0.3.x"
+    "tako": "0.3.x",
     "config": "0.4.x"
   }
 }
