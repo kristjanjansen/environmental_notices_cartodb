@@ -4,7 +4,7 @@ $(document).ready(function() {
   var tableid = 0;
   
   $.getJSON('config.json', function(data) {
-     tableid = data.GOOGLE_FUSION_TABLE_ID;
+     tableid = data.googleFusionTableID;
      initialize(tableid);
   });
   
