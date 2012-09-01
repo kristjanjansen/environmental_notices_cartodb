@@ -45,6 +45,18 @@ exports.sql = function(sql, callback) {
 
 }
 
+// Clear Google Fusion table
+
+exports.clear_table = function(googleFusionTableID, callback) {
+
+  sql = 'DELETE FROM ' + googleFusionTableID + ';'
+
+  exports.sql(sql, function(body) {    
+    return callback(body);
+  });
+
+}
+
 // Insert row to Google Fusion table
 
 exports.insert = function(google_fusion_table_id, row, callback) {
