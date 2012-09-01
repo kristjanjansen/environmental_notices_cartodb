@@ -1,4 +1,4 @@
-// Utility function to convert keyed array to URL components
+// Utility function to convert object to URL parameter string
 
 exports.obj2url = function(obj) {
   var url = [];

@@ -1,9 +1,14 @@
+// Google Fusion tables utilities
+// @todo Use https://github.com/dbamber/node-google-sql
+
 var GoogleClientLogin = require('googleclientlogin').GoogleClientLogin;
 var request = require('request');
 var CONFIG = require('config');
+
 var utils = require('./utils');
 
-// Make a SQL query to a Google Fusion table
+
+// Run a SQL query against Google Fusion table
 
 exports.sql = function(sql, callback) {
 
@@ -40,8 +45,7 @@ exports.sql = function(sql, callback) {
 
 }
 
-
-// Make a INSERT query to Google Fusion table
+// Insert row to Google Fusion table
 
 exports.insert = function(google_fusion_table_id, row, callback) {
 

@@ -1,5 +1,5 @@
 {
-  "name": "environmental_notices_node",
+  "name": "environmental_notices",
   "version": "0.0.1",
   "dependencies": {
     "date-utils": "1.2.x",

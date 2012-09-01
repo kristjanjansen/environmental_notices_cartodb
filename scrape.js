@@ -90,14 +90,11 @@ scraper(
         row.Type = $(this).find('td.teateliik').text().trim();
 
         var description_raw = $(this).next().find('td[colspan=4]').text().trim();
-//        row.Description = iconv.convert(new Buffer(description_raw, 'binary')).toString();
         row.Description = description_raw;
         row.Category = '';
         row.CategoryId = '';
         
         // Fetching geocoordinates from geonames based on description field
-        
-        // console.log(row);
                 
         var url = 'http://api.geonames.org/searchJSON?' + utils.obj2url({
           q: row.Description.replace(/ /gi, ','),
