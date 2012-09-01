@@ -3,12 +3,15 @@
 var CONFIG = require('config');
 require('date-utils');
 var scraper = require('scraper');
-// var Iconv  = require('iconv').Iconv;
 var request = require('request');
-var GoogleClientLogin = require('googleclientlogin').GoogleClientLogin;
 var schedule = require('node-schedule');
 
+var fusion = require('./fusion');
+var utils = require('./utils');
+
+// var Iconv  = require('iconv').Iconv;
 // var iconv = new Iconv('ISO-8859-15', 'UTF-8');
+// var GoogleClientLogin = require('googleclientlogin').GoogleClientLogin;
 
 var MAX_PAGES = 15;
 
@@ -72,7 +75,7 @@ for (var i=1; i < ((MAX_PAGES - 1) * 10) + 11 ; i = i + 10) {
 
 // Deleting previous data
 
-fusion_sql('DELETE FROM ' + google_fusion_table_id + ';', function() {
+//fusion.sql('DELETE FROM ' + google_fusion_table_id + ';', function() {
 
 
 // Running scraper for each member of uri array
@@ -105,10 +108,12 @@ scraper(
         row.Description = description_raw;
         row.Category = '';
         row.CategoryId = '';
-
+        
         // Fetching geocoordinates from geonames based on description field
-
-        var url = 'http://api.geonames.org/searchJSON?' + array2url({
+        
+        // console.log(row);
+                
+        var url = 'http://api.geonames.org/searchJSON?' + utils.obj2url({
           q: row.Description.replace(/ /gi, ','),
           username: geonames_username,
           operator: 'OR',
@@ -117,9 +122,9 @@ scraper(
           style: 'SHORT',
           country: 'EE',
           featureClass: 'P',  
-           lang: 'et',
+          lang: 'et',
         });
-
+                
         request({url:url, json:true}, function (error, response, body) {
 
           if (error) {
@@ -147,8 +152,8 @@ scraper(
                 row.Description.substr(0, 300);
 
                 // Inserting row to Google Fusion table
-
-                fusion_insert(google_fusion_table_id, row, function(body) {
+                                
+                fusion.insert(google_fusion_table_id, row, function(body) {
 
                   console.log(body);
 
@@ -164,16 +169,16 @@ scraper(
 },
 {
 
-  //	'reqPerSec': 0.1
+  'reqPerSec': 1
 
 });
 
-});
+//});
 
 };
 
 
-
+/*
 
 // Utility function to convert keyed array to URL components
 
@@ -252,6 +257,8 @@ function fusion_insert(google_fusion_table_id, row, callback) {
   });
 
 }
+
+*/
 
 // Scheduler to launch a worker in every x minutes
 
