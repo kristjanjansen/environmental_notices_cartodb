@@ -1,16 +1,11 @@
-// dev branch
-
 var CONFIG = require('config');
+
 require('date-utils');
 var scraper = require('scraper');
 var request = require('request');
-var schedule = require('node-schedule');
 
 var fusion = require('./fusion');
 var utils = require('./utils');
-
-// var Iconv  = require('iconv').Iconv;
-// var iconv = new Iconv('ISO-8859-15', 'UTF-8');
 
 var MAX_PAGES = 15;
 
@@ -48,8 +43,7 @@ var keys = [];
 // Main worker to scrape avalikudteadaanded.ee pages, geotagging
 // the results and writing them to Google Fusion database
 
-
-function worker() {
+exports.scrape = function() {
 
 // Construct array of URLs to scrape
 
@@ -168,27 +162,3 @@ scraper(
 });
 
 };
-
-
-// Scheduler to launch a worker in every x minutes
-
-var rule = new schedule.RecurrenceRule();
-rule.minute = new schedule.Range(0, 60, (CONFIG.updateRate || 10));
-
-var j = schedule.scheduleJob(rule, function(){
-    console.log('Launching worker');
-    worker();
-});
-
-// Serve app
-
-tako = require('tako');
-path = require('path')
- 
-app = tako();
-
-app.route('/').file(path.join(__dirname, 'static/index.html'));
-app.route('/static/*').files(path.join(__dirname, 'static'));
-app.route('/config.json').json({googleFusionTableID: CONFIG.googleFusionTableID});
-
-app.httpServer.listen(CONFIG.httpPort);
