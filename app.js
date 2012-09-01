@@ -4,7 +4,7 @@ var schedule = require('node-schedule');
 tako = require('tako');
 path = require('path')
 
-var scrape = require('./lib/scrape.js');
+var scrape = require('./lib/scrape');
 
 // Schedule scraper to run in certain interval
 
