@@ -18,8 +18,9 @@ npm install
 2. Create new Fusion Table by uploading that table template, note the Table ID
 3. Create Google Fusion API key at https://developers.google.com/fusiontables/docs/v1/using#APIKey, note down API key
 4. Create Geonames account http://www.geonames.org/login, note down account name
-5. Create /config directory under your project
-6. Create /config/default.json file with following contents (replace "" with your values):
+5. Enable Geonames service http://www.geonames.org/enablefreewebservice
+6. Create /config directory under your project
+7. Create /config/default.json file with following contents (replace "" with your values):
 
 ```
 {
