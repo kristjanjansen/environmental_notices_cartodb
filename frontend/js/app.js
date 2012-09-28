@@ -8,6 +8,10 @@ j18s.on("change", function(lang){
 
 j18s.setLang("et");
 
+$.getJSON('config.json', function(data) {
+  tableId = data.googleFusionTableId,
+  apiKey = data.googleFusionTableApiKey
+  
 $('#map').gmap({
   'center': '58.58,25.1', 
   'zoom': 7,
@@ -16,20 +20,17 @@ $('#map').gmap({
   .bind('init', function(evt, map) { 
 
 
-var tableId = '1tPYHIxLHoJceLl-2AgCmVJrFsCNWjAbZnVeZo-4';
-var key = 'AIzaSyBXyUdnzaES3vqQluaE6f2UIswT1YExFB4'
-var sql = 'SELECT * FROM ' + tableId + ' LIMIT 10';
+    var sql = 'SELECT * FROM ' + tableId + ' LIMIT 10';
 
+      $.getJSON('https://www.googleapis.com/fusiontables/v1/query?sql=' + encodeURIComponent(sql) + '&key=' + apiKey, function(data) {
 
-$.getJSON('https://www.googleapis.com/fusiontables/v1/query?sql=' + encodeURIComponent(sql) + '&key=' + key, function(data) {
+      var icon = new google.maps.MarkerImage("https://raw.github.com/kristjanjansen/environmental_notices/master/static/images/marker_16x16.png");
+      var content = '';
+      var len = data.rows.length;
+      for (var i = 0; i < len; i++) {
 
-  var icon = new google.maps.MarkerImage("https://raw.github.com/kristjanjansen/environmental_notices/master/static/images/marker_16x16.png");
-  var content_s = '';
-  var len = data.rows.length;
-  for (var i = 0; i < len; i++) {
-
-    var loc = data.rows[i][3].split(':');
-    content_s += 
+        var loc = data.rows[i][3].split(':');
+    content += 
     '<div id="'+data.rows[i][0]+'"><h3>' + 
     data.rows[i][2] + ' ' +
     data.rows[i][1] + ' ' + 
@@ -51,7 +52,7 @@ $.getJSON('https://www.googleapis.com/fusiontables/v1/query?sql=' + encodeURICom
  
   }
   
-  $('#content').html(content_s);
+  $('#content').html(content);
   $("#content p").addClass('hidden');
   
 });
@@ -63,11 +64,14 @@ $.getJSON('https://www.googleapis.com/fusiontables/v1/query?sql=' + encodeURICom
   });
 
   
-});
+}); // map
 
 
+}); // config
 
-});
+
+}); // document.ready
+
 
 function selectMarker(map, marker, scroll) {
   $(map).gmap('option', 'center', marker.position);

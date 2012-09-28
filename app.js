@@ -1,8 +1,9 @@
 var CONFIG = require('config');
 
+var os = require("os");
 var schedule = require('node-schedule');
-tako = require('tako');
-path = require('path')
+var tako = require('tako');
+var path = require('path')
 
 var scrape = require('./lib/scrape');
 
@@ -21,8 +22,13 @@ var j = schedule.scheduleJob(rule, function(){
  
 app = tako();
 
-app.route('/config.json').json({googleFusionTableID: CONFIG.googleFusionTableID});
+app.route('/config.json').json({
+  googleFusionTableId: CONFIG.googleFusionTableID,
+  googleFusionTableApiKey: CONFIG.googleFusionTableApikey
+});
 
 app.route('/').file(path.join(__dirname, 'frontend/index.html'));
 app.route('/frontend/*').files(path.join(__dirname, 'frontend'));
 app.httpServer.listen(CONFIG.httpPort);
+
+console.log('Running on ' + os.hostname() + ':'+ CONFIG.httpPort);
