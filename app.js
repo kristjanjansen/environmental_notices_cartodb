@@ -23,6 +23,6 @@ app = tako();
 
 app.route('/config.json').json({googleFusionTableID: CONFIG.googleFusionTableID});
 
-app.route('/').file(path.join(__dirname, 'static/index.html'));
-app.route('/static/*').files(path.join(__dirname, 'static'));
+app.route('/').file(path.join(__dirname, 'frontend/index.html'));
+app.route('/frontend/*').files(path.join(__dirname, 'frontend'));
 app.httpServer.listen(CONFIG.httpPort);
