@@ -9,8 +9,9 @@ j18s.on("change", function(lang){
 j18s.setLang("et");
 
 $.getJSON('config.json', function(data) {
-  tableId = data.googleFusionTableId,
-  apiKey = data.googleFusionTableApiKey
+  tableId = data.googleFusionTableId;
+  apiKey = data.googleFusionTableApiKey;
+  numResults = data.numResults;
   
 $('#map').gmap({
   'center': '58.58,25.1', 
@@ -18,10 +19,19 @@ $('#map').gmap({
   'mapTypeId': google.maps.MapTypeId.ROADMAP
   })
   .bind('init', function(evt, map) { 
+    console.log(numResults);
+    
+    date = moment().day(1).format('DD/MM/YYYY');
+    
+    var sql = "SELECT * FROM " + tableId + " WHERE 'Date' >= '" + date + "' ORDER BY Date DESC LIMIT " + (numResults || 10);
 
-    var sql = 'SELECT * FROM ' + tableId + ' LIMIT 10';
-
+      $.ajaxSetup({
+        cache: false
+      });
+      
       $.getJSON('https://www.googleapis.com/fusiontables/v1/query?sql=' + encodeURIComponent(sql) + '&key=' + apiKey, function(data) {
+
+
 
       var icon = new google.maps.MarkerImage("https://raw.github.com/kristjanjansen/environmental_notices/master/static/images/marker_16x16.png");
       var content = '';
@@ -36,7 +46,7 @@ $('#map').gmap({
           loc[0] + '</h3><p>' + 
           data.rows[i][3] + 
           '<a target="_blank" href="http://www.ametlikudteadaanded.ee/index.php?act=1&teade=' + 
-          data.rows[i][0]+'"><br /><span data-j18n>Read more</span></a></p></div>';
+          data.rows[i][0]+'"><br /><span data-j18s>Read more</span></a></p></div>';
         var rowLatlng = new google.maps.LatLng(data.rows[i][7],data.rows[i][8]);
         
         $('#map').gmap('addMarker', {

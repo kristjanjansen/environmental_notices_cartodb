@@ -53,7 +53,7 @@ h2, h3 {
   margin: 0;
 }
 .selected {
-  background: #eee;
+  background: #ffdddd;
 }
 .hidden {
   display: none;
