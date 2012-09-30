@@ -19,11 +19,11 @@ $('#map').gmap({
   'mapTypeId': google.maps.MapTypeId.ROADMAP
   })
   .bind('init', function(evt, map) { 
-    console.log(numResults);
     
-    date = moment().day(1).format('DD/MM/YYYY');
+    var from = moment().isoday(1).format('DD/MM/YYYY');
+    var to = moment().isoday(7).format('DD/MM/YYYY');
     
-    var sql = "SELECT * FROM " + tableId + " WHERE 'Date' >= '" + date + "' ORDER BY Date DESC LIMIT " + (numResults || 10);
+    var sql = "SELECT * FROM " + tableId + " WHERE Date >= '" + from + "' AND Date <= '" + to + "' ORDER BY Date DESC LIMIT " + (numResults || 10);
 
       $.ajaxSetup({
         cache: false
