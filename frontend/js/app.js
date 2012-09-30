@@ -20,8 +20,10 @@ $('#map').gmap({
   })
   .bind('init', function(evt, map) { 
     
-    var from = moment().isoday(1).format('DD/MM/YYYY');
-    var to = moment().isoday(7).format('DD/MM/YYYY');
+    var week = moment().isoweek();
+    
+    var from = moment().isoweek(week).isoday(1).format('DD/MM/YYYY');
+    var to = moment().isoweek(week).isoday(7).format('DD/MM/YYYY');
     
     var sql = "SELECT * FROM " + tableId + " WHERE Date >= '" + from + "' AND Date <= '" + to + "' ORDER BY Date DESC LIMIT " + (numResults || 10);
 
