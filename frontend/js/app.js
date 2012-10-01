@@ -1,96 +1,31 @@
-$(document).ready(function() {
+var app = Davis(function () {
 
-j18s.on("change", function(lang){
-  $.getJSON("frontend/translations/"+ lang + ".json", function(langData){
-    j18s.addLang(lang, langData);
-  });
-});
-
-j18s.setLang("et");
-
-$.getJSON('config.json', function(data) {
-  tableId = data.googleFusionTableId;
-  apiKey = data.googleFusionTableApiKey;
-  numResults = data.numResults;
-  
-$('#map').gmap({
-  'center': '58.58,25.1', 
-  'zoom': 7,
-  'mapTypeId': google.maps.MapTypeId.ROADMAP
+  this.configure(function () {
+    this.raiseErrors = true
   })
-  .bind('init', function(evt, map) { 
-    
+
+  this.get('/p/:year/:week', function (req) {
+    var year = parseInt(req.params['year']);
+    var week = parseInt(req.params['week']);
+     $.getJSON('/config.json', function(data) {
+       drawMap(year, week, data.googleFusionTableId, data.googleFusionTableApiKey, data.numResults);    
+       setPager(year, week);
+    });
+
+  });
+
+  this.bind('start', function () {
+    var year = moment().year();
     var week = moment().isoweek();
-    
-    var from = moment().isoweek(week).isoday(1).format('DD/MM/YYYY');
-    var to = moment().isoweek(week).isoday(7).format('DD/MM/YYYY');
-    
-    var sql = "SELECT * FROM " + tableId + " WHERE Date >= '" + from + "' AND Date <= '" + to + "' ORDER BY Date DESC LIMIT " + (numResults || 10);
-
-      $.ajaxSetup({
-        cache: false
-      });
-      
-      $.getJSON('https://www.googleapis.com/fusiontables/v1/query?sql=' + encodeURIComponent(sql) + '&key=' + apiKey, function(data) {
+    $.getJSON('/config.json', function(data) {
+      drawMap(year, week, data.googleFusionTableId, data.googleFusionTableApiKey, data.numResults);    
+      setPager(year, week);
+   });
+})
+})
 
 
-
-      var icon = new google.maps.MarkerImage("https://raw.github.com/kristjanjansen/environmental_notices/master/static/images/marker_16x16.png");
-      var content = '';
-      var len = data.rows.length;
-      for (var i = 0; i < len; i++) {
-
-        var loc = data.rows[i][3].split(':');
-        content += 
-          '<div id="'+data.rows[i][0]+'"><h3>' + 
-          data.rows[i][2] + ' ' +
-          data.rows[i][1] + ' ' + 
-          loc[0] + '</h3><p>' + 
-          data.rows[i][3] + 
-          '<a target="_blank" href="http://www.ametlikudteadaanded.ee/index.php?act=1&teade=' + 
-          data.rows[i][0]+'"><br /><span data-j18s>Read more</span></a></p></div>';
-        var rowLatlng = new google.maps.LatLng(data.rows[i][7],data.rows[i][8]);
-        
-        $('#map').gmap('addMarker', {
-          position: rowLatlng,
-          icon: icon,
-          id: data.rows[i][0],
-        })
-        .click(function() {
-          selectMarker('#map', this, true);
-        });
-  
-      }
-  
-      $('#content').html(content);
-      $("#content p").addClass('hidden');
-  
-    });
-
-    $("#content div").live("click", function(event){
-      var id = $(this).attr("id");
-      var marker = $('#map').gmap('get', 'markers')[id];
-      selectMarker('#map', marker);
-    });
-
-  
-  }); 
-
-
-}); 
-
-
+$(document).ready(function () {
+  app.start()
 });
 
-
-function selectMarker(map, marker, scroll) {
-  $(map).gmap('option', 'center', marker.position);
-  $(map).gmap('option', 'zoom', 8);
-  $('.selected').removeClass('selected');
-  $('#'+ marker.id).addClass('selected');
-  if (scroll) {
-    $('#'+ marker.id).scrollIntoView(false); 
-  }
-  $('#content p').addClass('hidden'); 
-  $('#'+ marker.id + ' p').removeClass('hidden');
-}
