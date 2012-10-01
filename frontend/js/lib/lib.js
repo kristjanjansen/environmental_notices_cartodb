@@ -17,7 +17,6 @@ function setPager(year, week) {
 
 function drawMap(year, week, tableId, apiKey, numResults) {
   
-  console.log('1 ' + year);
   
   var tableId;
   var apiKey;
@@ -25,11 +24,12 @@ function drawMap(year, week, tableId, apiKey, numResults) {
   
 
   
-$('#map').gmap({
+$('#map').gmap('destroy').gmap({
   'center': '58.58,25.1', 
   'zoom': 7,
   'mapTypeId': google.maps.MapTypeId.ROADMAP
 });
+
 
     //var week = moment().subtract('w', 1).isoweek();
     
@@ -38,7 +38,6 @@ $('#map').gmap({
     
     var sql = "SELECT * FROM " + tableId + " WHERE Date >= '" + from + "' AND Date <= '" + to + "' ORDER BY Date DESC LIMIT " + (numResults || 10);
 
-    console.log(sql);
     
       $.ajaxSetup({
         cache: false
@@ -63,6 +62,7 @@ $('#map').gmap({
           '<a target="_blank" href="http://www.ametlikudteadaanded.ee/index.php?act=1&teade=' + 
           data.rows[i][0]+'"><br /><span data-j18s>Read more</span></a></p></div>';
         var rowLatlng = new google.maps.LatLng(data.rows[i][7],data.rows[i][8]);
+        
         
         $('#map').gmap('addMarker', {
           position: rowLatlng,
