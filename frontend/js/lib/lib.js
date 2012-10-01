@@ -1,18 +1,16 @@
 function setPager(year, week) {
-
-  var date_prev = moment().year(year).isoweek(week).subtract('w', 1);
-  if (date_prev.subtract('d', 6).year() < year) {
-    date_prev.subtract('year', 1);
-  }
-  var date_next = moment().year(year).isoweek(week).add('w', 1);
-  if (date_next.add('d', 6).year() > year) {
-    date_next.add('year', 1);
-  }
+  
+  var date_prev = moment().year(year).isoweek(week).subtract('days', 7);
+//  if (date_prev.subtract('d', 6).year() < year) {
+//    date_prev.subtract('year', 1);
+//  }
+  var date_next = moment().year(year).isoweek(week).add('days', 7);
+//  if (date_next.add('d', 6).year() > year) {
+//    date_next.add('year', 1);
+//  }
   $('#prev').attr('href', '/p/' + date_prev.year() + '/' + date_prev.isoweek()); 
   $('#next').attr('href', '/p/' + date_next.year() + '/' + date_next.isoweek()); 
 
-  var date = date_prev.format('DD/MM/YYYY') + ' - ' + date_next.format('DD/MM/YYYY')
-  $('#date').html(date); 
 }
 
 function drawMap(year, week, tableId, apiKey, numResults) {
@@ -29,15 +27,16 @@ $('#map').gmap('destroy').gmap({
   'zoom': 7,
   'mapTypeId': google.maps.MapTypeId.ROADMAP
 });
-
-
-    //var week = moment().subtract('w', 1).isoweek();
+  
+    setPager(year, week);
+   
+    $('#content').html(null);
+    
     
     var from = moment().year(year).isoweek(week).isoday(1).format('DD/MM/YYYY');
     var to = moment().year(year).isoweek(week).isoday(7).format('DD/MM/YYYY');
-    
-    var sql = "SELECT * FROM " + tableId + " WHERE Date >= '" + from + "' AND Date <= '" + to + "' ORDER BY Date DESC LIMIT " + (numResults || 10);
-
+       
+    var sql = "SELECT * FROM " + tableId + " WHERE 'Date' >= '" + from + "' AND 'Date' <= '" + to + "' ORDER BY 'Date' LIMIT " + (numResults || 10);
     
       $.ajaxSetup({
         cache: false
