@@ -13,20 +13,47 @@ a, a:link, a:visited, a:hover {
   text-decoration: none;
   font-weight: bold;
 }
+#bar {
+  float:left;
+  position:absolute;
+  width:58px;
+  top:0;
+  left: 0;
+  bottom: 0;
+  margin: 0px;
+  background: #333;
+  overflow: hidden;
+  background-image:-moz-linear-gradient(left, #333 0%, #222 66%,#222 100%);
+  background-image:-webkit-linear-gradient(left, #333 0%, #222 66%,#222 100%);
+  background-image:linear-gradient(left, #333 0%, #222 66%,#222 100%);
+}
+#bar a {
+  display: block;
+  margin: 12px 0 0 15px;
+  color: #eee;
+  font-weight: normal;
+  font-size: 25px;
+}
 #header {
+  font-size: 20px;  
   float:left;
   position:absolute;
   width:300px;
   top:0;
-  height: 62px;
+  left: 59px;
+  height: 55px;
   margin: 0px;
   border-bottom: 1px solid #aaa;
+}
+#header a {
+  color: #333;
 }
 #sidebar {
   float:left;
   position:absolute;
   width:300px;
-  top:63px;
+  top:56px;
+  left: 59px !important;  
   bottom:0;
   left:0;
   overflow: scroll;
@@ -36,7 +63,7 @@ a, a:link, a:visited, a:hover {
   position:absolute;
   top:0;
   bottom:0;
-  left:300px;
+  left:359px;
   right:0;
   border-left: 1px solid #aaa;
 }
@@ -61,7 +88,7 @@ h2, h3 {
 #prev, #next {
   font-size: 1.5em;
   font-weight: normal;
-  padding:20px;
+  padding:10px 10px 10px 15px;  
 }
 #prev:hover, #next:hover {
   background: #ffdddd;
@@ -70,7 +97,7 @@ h2, h3 {
   float: left;
   border-right: 1px solid gray;
 }
-#next{
+#next {
   float: right;
-  border-left: 1px solid gray;  
+  border-left: 1px solid gray;
 }
