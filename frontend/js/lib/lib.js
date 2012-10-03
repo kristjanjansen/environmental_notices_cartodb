@@ -43,7 +43,7 @@ $('#map').gmap('destroy').gmap({
     console.log(sql);
     
       $.ajaxSetup({
-     //   cache: false
+        cache: false
       });
       
       $.getJSON(url, function(data) {
