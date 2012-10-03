@@ -30,19 +30,22 @@ $('#map').gmap('destroy').gmap({
   
     setPager(year, week);
    
-    $('#content').html(null);
+    $('#content').html('<div>Loading...</div>');
     
     
-    var from = moment().year(year).isoweek(week).isoday(1).format('DD/MM/YYYY');
-    var to = moment().year(year).isoweek(week).isoday(7).format('DD/MM/YYYY');
+    var from = moment().year(year).isoweek(week).isoday(1).format('MM/DD/YYYY');
+    var to = moment().year(year).isoweek(week).isoday(7).format('MM/DD/YYYY');
        
     var sql = "SELECT * FROM " + tableId + " WHERE 'Date' >= '" + from + "' AND 'Date' <= '" + to + "' ORDER BY 'Date' LIMIT " + (numResults || 10);
+    var url = 'https://www.googleapis.com/fusiontables/v1/query?sql=' + encodeURIComponent(sql) + '&key=' + apiKey;
+    
+    console.log(url);
     
       $.ajaxSetup({
         cache: false
       });
       
-      $.getJSON('https://www.googleapis.com/fusiontables/v1/query?sql=' + encodeURIComponent(sql) + '&key=' + apiKey, function(data) {
+      $.getJSON(url, function(data) {
 
 
 
@@ -52,10 +55,11 @@ $('#map').gmap('destroy').gmap({
       for (var i = 0; i < len; i++) {
 
         var loc = data.rows[i][3].split(':');
+        var date = moment(data.rows[i][1]).format('DD.MM.YYYY');
         content += 
           '<div id="'+data.rows[i][0]+'"><h3>' + 
           data.rows[i][2] + ' ' +
-          data.rows[i][1] + ' ' + 
+          date + ' ' + 
           loc[0] + '</h3><p>' + 
           data.rows[i][3] + 
           '<a target="_blank" href="http://www.ametlikudteadaanded.ee/index.php?act=1&teade=' + 
@@ -73,7 +77,6 @@ $('#map').gmap('destroy').gmap({
         });
   
       }
-  
       $('#content').html(content);
       $("#content p").addClass('hidden');
   

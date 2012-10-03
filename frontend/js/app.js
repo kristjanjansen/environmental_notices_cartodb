@@ -25,6 +25,7 @@ var app = Davis(function () {
 
 
 $(document).ready(function () {
+  Davis.extend(Davis.hashRouting({ forceHashRouting: true }))
   app.start()
 });
 
