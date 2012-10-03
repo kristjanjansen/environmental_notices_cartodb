@@ -33,8 +33,8 @@ $('#map').gmap('destroy').gmap({
     $('#content').html('<div>Loading...</div>');
     
     
-    var from = moment().year(year).isoweek(week).isoday(1).format('MM/DD/YYYY');
-    var to = moment().year(year).isoweek(week).isoday(7).format('MM/DD/YYYY');
+    var from = moment().year(year).isoweek(week).isoday(1).format('MMM DD, YYYY');
+    var to = moment().year(year).isoweek(week).isoday(7).format('MMM DD, YYYY');
        
     var sql = "SELECT * FROM " + tableId + " WHERE 'Date' >= '" + from + "' AND 'Date' <= '" + to + "' ORDER BY Date";
     var url = 'https://www.googleapis.com/fusiontables/v1/query?sql=' + encodeURIComponent(sql) + '&key=' + apiKey;
