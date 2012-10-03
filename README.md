@@ -4,12 +4,13 @@ This is the port of https://github.com/kristjanjansen/environmental_notices_old 
 
 ## Installing
 
-This script assumes you have ```node``` and ```npm``` installed.
+This script assumes you have ```node```, ```npm``` and ```volo``` installed.
 
 ```
 git clone https://github.com/kristjanjansen/environmental_notices
 cd environmental_notices
 npm install
+volo add
 ```
 
 ## Config
