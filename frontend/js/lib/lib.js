@@ -36,10 +36,10 @@ $('#map').gmap('destroy').gmap({
     var from = moment().year(year).isoweek(week).isoday(1).format('MM/DD/YYYY');
     var to = moment().year(year).isoweek(week).isoday(7).format('MM/DD/YYYY');
        
-    var sql = "SELECT * FROM " + tableId + " WHERE 'Date' >= '" + from + "' AND 'Date' <= '" + to + "' ORDER BY 'Date' LIMIT " + (numResults || 10);
+    var sql = "SELECT * FROM " + tableId + " WHERE 'Date' >= '" + from + "' AND 'Date' <= '" + to + "' ORDER BY Date";
     var url = 'https://www.googleapis.com/fusiontables/v1/query?sql=' + encodeURIComponent(sql) + '&key=' + apiKey;
     
-    console.log(url);
+    console.log(sql);
     
       $.ajaxSetup({
         cache: false
@@ -51,6 +51,8 @@ $('#map').gmap('destroy').gmap({
 
       var icon = new google.maps.MarkerImage("https://raw.github.com/kristjanjansen/environmental_notices/master/static/images/marker_16x16.png");
       var content = '';
+      if (data.rows) {
+        
       var len = data.rows.length;
       for (var i = 0; i < len; i++) {
 
@@ -79,7 +81,9 @@ $('#map').gmap('destroy').gmap({
       }
       $('#content').html(content);
       $("#content p").addClass('hidden');
-  
+    } else {
+      $('#content').html('<div>No results</div>');     
+    }
     });
 
     $("#content div").live("click", function(event){

@@ -8,7 +8,7 @@ var app = Davis(function () {
     var year = parseInt(req.params['year']);
     var week = parseInt(req.params['week']);
      $.getJSON('/config.json', function(data) {
-       drawMap(year, week, data.googleFusionTableId, data.googleFusionTableApiKey, data.numResults);    
+       drawMap(year, week, data.googleFusionTableId, data.googleFusionTableApiKey);    
     });
 
   });
@@ -17,7 +17,7 @@ var app = Davis(function () {
     var year = moment().year();
     var week = moment().isoweek();
     $.getJSON('/config.json', function(data) {
-      drawMap(year, week, data.googleFusionTableId, data.googleFusionTableApiKey, data.numResults);    
+      drawMap(year, week, data.googleFusionTableId, data.googleFusionTableApiKey);    
    });
   
 })

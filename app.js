@@ -25,7 +25,6 @@ app = tako();
 app.route('/config.json').json({
   googleFusionTableId: CONFIG.googleFusionTableID,
   googleFusionTableApiKey: CONFIG.googleFusionTableApikey,
-  numResults: CONFIG.numResults
 });
 
 app.route('/').file(path.join(__dirname, 'frontend/index.html'));
