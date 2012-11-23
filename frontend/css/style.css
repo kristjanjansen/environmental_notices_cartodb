@@ -13,63 +13,6 @@ a, a:link, a:visited, a:hover {
   text-decoration: none;
   font-weight: bold;
 }
-#bar {
-  float:left;
-  position:absolute;
-  width:58px;
-  top:0;
-  left: 0;
-  bottom: 0;
-  margin: 0px;
-  background: #333;
-  overflow: hidden;
-  background-image:-moz-linear-gradient(left, #333 0%, #222 66%,#222 100%);
-  background-image:-webkit-linear-gradient(left, #333 0%, #222 66%,#222 100%);
-  background-image:linear-gradient(left, #333 0%, #222 66%,#222 100%);
-}
-#bar a {
-  display: block;
-  margin: 12px 0 0 15px;
-  color: #eee;
-  font-weight: normal;
-  font-size: 25px;
-}
-#header {
-  font-size: 20px;  
-  float:left;
-  position:absolute;
-  width:300px;
-  top:0;
-  left: 59px;
-  height: 55px;
-  margin: 0px;
-  border-bottom: 1px solid #aaa;
-}
-#header a {
-  color: #333;
-}
-#sidebar {
-  float:left;
-  position:absolute;
-  width:300px;
-  top:56px;
-  left: 59px !important;  
-  bottom:0;
-  left:0;
-  overflow: scroll;
-}
-#map {
-  overflow:hidden;
-  position:absolute;
-  top:0;
-  bottom:0;
-  left:359px;
-  right:0;
-  border-left: 1px solid #aaa;
-}
-#content div {
-  padding: 20px 20px 10px 20px;
-}
 h1 {
   background: url(../images/logo.png) no-repeat 0 0;
   margin: 20px 20px 10px 20px;
@@ -79,25 +22,58 @@ h1 {
 h2, h3 {
   margin: 0;
 }
+
+#sidebar {
+  top: 0;
+  left:0;
+  bottom:0;
+  height: 100%;
+  position:absolute;
+  width: 350px;
+}
+#nav {
+  height: 54px;
+  font-size: 20px;  
+  border-bottom: 1px solid #aaa;
+}
+#nav a {
+  padding: 15px;
+  display: inline-block;
+}
+#logo {
+  color: #333;
+  background: #fff url(/frontend/images/logo.png) no-repeat 15px center;
+  padding-left: 55px !important;
+}
+#prev, #next {
+  float: right;
+  font-weight: normal;
+}
+#prev:hover, #next:hover {
+  background: #ffdddd;
+}
+#content {
+  overflow: scroll;
+  height: 91%;
+}
+#content div {
+  padding: 15px 15px 5px 15px;
+}
+#content h3 {
+  cursor: pointer;
+}
+#map {
+  overflow:hidden;
+  position:absolute;
+  top:0;
+  bottom:0;
+  left:351px;
+  right:0;
+  border-left: 1px solid #aaa;
+}
 .selected {
   background: #ffdddd;
 }
 .hidden {
   display: none;
-}
-#prev, #next {
-  font-size: 1.5em;
-  font-weight: normal;
-  padding:10px 10px 10px 15px;  
-}
-#prev:hover, #next:hover {
-  background: #ffdddd;
-}
-#prev {
-  float: left;
-  border-right: 1px solid gray;
-}
-#next {
-  float: right;
-  border-left: 1px solid gray;
 }
