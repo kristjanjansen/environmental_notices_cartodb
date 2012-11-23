@@ -37,7 +37,7 @@ $('#map').gmap('destroy').gmap({
     var from = moment().year(year).isoweek(week).isoday(1).format('MMM DD, YY');
     var to = moment().year(year).isoweek(week).isoday(7).format('MMM DD, YY');
        
-    var sql = "SELECT * FROM " + tableId + " WHERE 'Date' >= '" + from + "' AND 'Date' <= '" + to + "' ORDER BY Date";
+    var sql = "SELECT * FROM " + tableId + " WHERE 'Date' >= '" + from + "' AND 'Date' <= '" + to + "' ORDER BY Type";
     var url = 'https://www.googleapis.com/fusiontables/v1/query?sql=' + encodeURIComponent(sql) + '&key=' + apiKey;
     
     console.log(sql);
@@ -61,9 +61,9 @@ $('#map').gmap('destroy').gmap({
         var date = moment(data.rows[i][1]).format('DD.MM.YYYY');
         content += 
           '<div id="'+data.rows[i][0]+'"><h3>' + 
-          data.rows[i][2] + ' ' +
-          date + ' ' + 
-          loc[0] + '</h3><p>' + 
+          data.rows[i][2] + '</h3><span>' +
+          loc[0] + ' ' + 
+          date + '</span><p>' + 
           data.rows[i][3] + 
           '<a target="_blank" href="http://www.ametlikudteadaanded.ee/index.php?act=1&teade=' + 
           data.rows[i][0]+'"><br /><span data-j18s>Read more</span></a></p></div>';
