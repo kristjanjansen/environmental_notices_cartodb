@@ -50,7 +50,7 @@ h2, h3 {
   font-weight: normal;
 }
 #prev:hover, #next:hover {
-  background: #ffdddd;
+  background: rgba(255,0,0,0.05);
 }
 #content {
   overflow: scroll;
@@ -58,10 +58,22 @@ h2, h3 {
 }
 #content div {
   padding: 15px 15px 5px 15px;
+  line-height: 135%;
 }
 #content h3 {
   cursor: pointer;
+  opacity: 0.95;
 }
+#content span {
+  opacity: 0.9;
+}
+#content .selected {
+  background: rgba(255,0,0,0.05);
+}
+#content .hidden {
+  display: none;
+}
+
 #map {
   overflow:hidden;
   position:absolute;
@@ -70,10 +82,4 @@ h2, h3 {
   left:351px;
   right:0;
   border-left: 1px solid #aaa;
-}
-.selected {
-  background: #ffdddd;
-}
-.hidden {
-  display: none;
 }
