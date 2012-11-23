@@ -50,7 +50,7 @@ $('#map').gmap('destroy').gmap({
 
 
 
-      var icon = new google.maps.MarkerImage("https://raw.github.com/kristjanjansen/environmental_notices/master/static/images/marker_16x16.png");
+      var icon = new google.maps.MarkerImage("frontend/images/marker_16x16.png");
       var content = '';
       if (data.rows) {
         
