@@ -21,8 +21,7 @@
       "moment": "github:timrwood/moment",
       "moment-isocalendar": "github:fusionbox/moment-isocalendar",
       "davis": "https://raw.github.com/olivernn/davis.js/master/davis.js",
-      "davis.hashRouting": "https://raw.github.com/olivernn/davis.js/master/lib/extensions/davis.hashRouting.js",
-      "Font-Awesome": "github:FortAwesome/Font-Awesome"
+      "davis.hashRouting": "https://raw.github.com/olivernn/davis.js/master/lib/extensions/davis.hashRouting.js"
     }
   }
 }

@@ -10,7 +10,7 @@ function setPager(year, week) {
 //  }
   $('#prev').attr('href', '/p/' + date_prev.year() + '/' + date_prev.isoweek()); 
   $('#next').attr('href', '/p/' + date_next.year() + '/' + date_next.isoweek()); 
-  $('#bar a').attr('href', '/p/' + moment().year() + '/' + moment().isoweek()); 
+  $('#logo').attr('href', '/p/' + moment().year() + '/' + moment().isoweek()); 
 
 }
 
