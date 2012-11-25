@@ -60,8 +60,8 @@ $('#map').gmap('destroy').gmap({
         var loc = data.rows[i][3].split(':');
         var date = moment(data.rows[i][1]).format('DD.MM.YYYY');
         content += 
-          '<div id="'+data.rows[i][0]+'"><h3>' + 
-          data.rows[i][2] + '</h3><span>' +
+          '<div id="' + data.rows[i][0] + '"' + (data.rows[i][7] > 0 ? ' class="marker" ' : '') + '><h3>' + 
+          data.rows[i][2] + '</h3>' + '<span>' +
           loc[0] + ' ' + 
           date + '</span><p>' + 
           data.rows[i][3] + 
@@ -90,7 +90,7 @@ $('#map').gmap('destroy').gmap({
     $("#content div").live("click", function(event){
       var id = $(this).attr("id");
       var marker = $('#map').gmap('get', 'markers')[id];
-      selectMarker('#map', marker);
+      selectMarker('#map', marker, true, $(this).hasClass('marker'));
     });
 
 
@@ -101,9 +101,14 @@ $('#map').gmap('destroy').gmap({
 
 
 
-function selectMarker(map, marker, scroll) {
-  $(map).gmap('option', 'center', marker.position);
-  $(map).gmap('option', 'zoom', 8);
+function selectMarker(map, marker, scroll, hasMarker) {
+  if (hasMarker) {
+    $(map).gmap('option', 'center', marker.position);
+    $(map).gmap('option', 'zoom', 14);
+  } else {
+    $(map).gmap('option', 'center', google.maps.LatLng(58.58,25.1));
+    $(map).gmap('option', 'zoom', 7);    
+  }
   $('.selected').removeClass('selected');
   $('#'+ marker.id).addClass('selected');
   if (scroll) {
