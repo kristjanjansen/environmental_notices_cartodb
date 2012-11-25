@@ -57,12 +57,10 @@ $('#map').gmap('destroy').gmap({
       var len = data.rows.length;
       for (var i = 0; i < len; i++) {
 
-        var loc = data.rows[i][3].split(':');
         var date = moment(data.rows[i][1]).format('DD.MM.YYYY');
         content += 
           '<div id="' + data.rows[i][0] + '"' + (data.rows[i][7] > 0 ? ' class="marker" ' : '') + '><h3>' + 
-          data.rows[i][2] + '</h3>' + '<span>' +
-          loc[0] + ' ' + 
+          data.rows[i][2] + '</h3>' + '<span>' + 
           date + '</span><p>' + 
           data.rows[i][3] + 
           '<a target="_blank" href="http://www.ametlikudteadaanded.ee/index.php?act=1&teade=' + 
