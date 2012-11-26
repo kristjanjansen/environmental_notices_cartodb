@@ -8,12 +8,9 @@ var path = require('path')
 var scrape = require('./lib/scrape');
 var geocode = require('./lib/geocode');
 
-// Schedule scraper to run in certain interval
+// Schedule background tasks
 
-// var rule = new schedule.RecurrenceRule();
-// rule.minute = new schedule.Range(0, 60, (CONFIG.updateRate || 10));
-
-var j = schedule.scheduleJob({minute: 1}, function(){
+var j = schedule.scheduleJob({minute: 0}, function(){
     console.log('Launching scraper');
     scrape.scrape();
 });
