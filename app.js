@@ -6,7 +6,6 @@ var tako = require('tako');
 var path = require('path')
 
 var scrape = require('./lib/scrape');
-var geocode = require('./lib/geocode');
 
 // Schedule background tasks
 

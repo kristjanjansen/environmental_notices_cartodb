@@ -1,13 +1,8 @@
 function setPager(year, week) {
   
   var date_prev = moment().year(year).isoweek(week).subtract('days', 7);
-//  if (date_prev.subtract('d', 6).year() < year) {
-//    date_prev.subtract('year', 1);
-//  }
   var date_next = moment().year(year).isoweek(week).add('days', 7);
-//  if (date_next.add('d', 6).year() > year) {
-//    date_next.add('year', 1);
-//  }
+
   $('#prev').attr('href', '/p/' + date_prev.year() + '/' + date_prev.isoweek()); 
   $('#next').attr('href', '/p/' + date_next.year() + '/' + date_next.isoweek()); 
   $('#logo').attr('href', '/p/' + moment().year() + '/' + moment().isoweek()); 
@@ -34,13 +29,12 @@ $('#map').gmap('destroy').gmap({
     $('#content').html('<div>Loading...</div>');
     
     
-    var from = moment().year(year).isoweek(week).isoday(1).format('MMM DD, YY');
-    var to = moment().year(year).isoweek(week).isoday(7).format('MMM DD, YY');
+    var from = moment().year(year).isoweek(week).isoday(1).format('YYYY-MM-DDTHH:mm:ssZ');
+    var to = moment().year(year).isoweek(week).isoday(7).format('YYYY-MM-DDTHH:mm:ssZ');
        
-    var sql = "SELECT * FROM " + tableId + " WHERE 'Date' >= '" + from + "' AND 'Date' <= '" + to + "' ORDER BY Type";
-    var url = 'https://www.googleapis.com/fusiontables/v1/query?sql=' + encodeURIComponent(sql) + '&key=' + apiKey;
+    var url = "http://keskkonnateated.cartodb.com/api/v2/sql?q=SELECT id, date, type, description, ST_AsGeoJSON(the_geom) as the_geom FROM development WHERE date >= '" + from + "' AND date <= '" + to + "' ORDER BY id DESC"
     
-    console.log(sql);
+    console.log(url);
     
       $.ajaxSetup({
         cache: false
@@ -56,17 +50,21 @@ $('#map').gmap('destroy').gmap({
         
       var len = data.rows.length;
       for (var i = 0; i < len; i++) {
-
-        var date = moment(data.rows[i][1]).format('DD.MM.YYYY');
-        content += 
-          '<div id="' + data.rows[i][0] + '"' + (data.rows[i][7] > 0 ? ' class="marker" ' : '') + '><h3>' + 
-          data.rows[i][2] + '</h3>' + '<span>' + 
-          date + '</span><p>' + 
-          data.rows[i][3] + 
-          '<a target="_blank" href="http://www.ametlikudteadaanded.ee/index.php?act=1&teade=' + 
-          data.rows[i][0]+'"><br /><span data-j18s>Read more</span></a></p></div>';
-        var rowLatlng = new google.maps.LatLng(data.rows[i][7],data.rows[i][8]);
         
+        var the_geom = $.parseJSON(data.rows[i].the_geom)
+
+        var date = moment(data.rows[i].date).format('DD.MM.YYYY');
+        content += 
+          '<div id="' + data.rows[i].id + '"' + (the_geom ? ' class="marker" ' : '') + '><h3>' + 
+          data.rows[i].type + '</h3>' + '<span>' + 
+          date + '</span><p>' + 
+          data.rows[i].description + 
+          '<a target="_blank" href="http://www.ametlikudteadaanded.ee/index.php?act=1&teade=' + 
+          data.rows[i].id + '"><br /><span data-j18s>Read more</span></a></p></div>';
+          
+          if (the_geom) {
+            var rowLatlng = new google.maps.LatLng(the_geom.coordinates[1],the_geom.coordinates[0]);
+          }
         
         $('#map').gmap('addMarker', {
           position: rowLatlng,
