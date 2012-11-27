@@ -27,8 +27,7 @@ $('#map').gmap('destroy').gmap({
     setPager(year, week);
    
     $('#content').html('<div>Loading...</div>');
-    
-    
+        
     var from = moment().year(year).isoweek(week).isoday(1).format('YYYY-MM-DDTHH:mm:ssZ');
     var to = moment().year(year).isoweek(week).isoday(7).format('YYYY-MM-DDTHH:mm:ssZ');
        
@@ -41,8 +40,6 @@ $('#map').gmap('destroy').gmap({
       });
       
       $.getJSON(url, function(data) {
-
-
 
       var icon = new google.maps.MarkerImage("frontend/images/marker_16x16.png");
       var content = '';
@@ -114,22 +111,3 @@ function selectMarker(id, scroll) {
     $('#map').gmap('option', 'zoom', 7);            
   }
 }
-
-/*
-function selectMarker(map, marker, scroll, hasMarker, id) {
-  if (hasMarker && marker) {
-    $(map).gmap('option', 'center', marker.position);
-    $(map).gmap('option', 'zoom', 14);
-  } else {
-    $(map).gmap('option', 'center', google.maps.LatLng(58.58,25.1));
-    $(map).gmap('option', 'zoom', 7);    
-  }
-  $('.selected').removeClass('selected');
-  $('#'+ id).addClass('selected');
-  if (scroll) {
-    $('#'+ id).scrollIntoView(false); 
-  }
-  $('#content p').addClass('hidden'); 
-  $('#'+ id + ' p').removeClass('hidden');
-}
-*/
