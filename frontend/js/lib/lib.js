@@ -16,7 +16,7 @@ function drawMap(year, week, cartoUser, cartoTable, numResults) {
   var apiKey;
   var numResults;
   
-
+  
   
 $('#map').gmap('destroy').gmap({
   'center': '58.58,25.1', 
@@ -64,16 +64,17 @@ $('#map').gmap('destroy').gmap({
           
           if (the_geom) {
             var rowLatlng = new google.maps.LatLng(the_geom.coordinates[1],the_geom.coordinates[0]);
-          }
         
-        $('#map').gmap('addMarker', {
-          position: rowLatlng,
-          icon: icon,
-          id: data.rows[i][0],
-        })
-        .click(function() {
-          selectMarker('#map', this, true);
-        });
+            $('#map').gmap('addMarker', {
+              position: rowLatlng,
+              icon: icon,
+              id: data.rows[i].id,
+            })
+            .click(function() {
+              selectMarker(null, this);
+            });
+ 
+          }
   
       }
       $('#content').html(content);
@@ -84,19 +85,35 @@ $('#map').gmap('destroy').gmap({
     });
 
     $("#content div").live("click", function(event){
-      var id = $(this).attr("id");
-      var marker = $('#map').gmap('get', 'markers')[id];
-      selectMarker('#map', marker, true, $(this).hasClass('marker'), id);
+      selectNotice($(this).attr("id"));
+      selectMarker(false, $(this).attr("id"));
     });
 
 
 
 };
 
+function selectNotice(id) {
+  $('.selected').removeClass('selected');
+  $('#'+ id).addClass('selected');
+  $('#content p').addClass('hidden'); 
+  $('#'+ id + ' p').removeClass('hidden');
+}  
 
+function selectMarker(marker, id) {
+  var marker = (marker || $('#map').gmap('get', 'markers')[id])
+  var center = new google.maps.LatLng(58.58, 25.1)
+  
+  if (marker) {
+    $('#map').gmap('option', 'center', marker.position);
+    $('#map').gmap('option', 'zoom', 14);    
+  } else {
+    $('#map').gmap('option', 'center', center);
+    $('#map').gmap('option', 'zoom', 7);            
+  }
+}
 
-
-
+/*
 function selectMarker(map, marker, scroll, hasMarker, id) {
   if (hasMarker && marker) {
     $(map).gmap('option', 'center', marker.position);
@@ -113,3 +130,4 @@ function selectMarker(map, marker, scroll, hasMarker, id) {
   $('#content p').addClass('hidden'); 
   $('#'+ id + ' p').removeClass('hidden');
 }
+*/
