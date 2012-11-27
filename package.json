@@ -2,18 +2,16 @@
   "name": "environmental_notices",
   "version": "0.0.1",
   "dependencies": {
-    "date-utils": "1.2.x",
-    "googleclientlogin": "0.2.x",
     "node-schedule": "0.1.x",
     "request": "2.9.x",
-    "scraper": "0.0.x",
     "tako": "0.3.x",
     "config": "0.4.x",
     "moment": "1.7.x",
     "cheerio": "0.10.x",
     "each": "0.2.x",
     "proj4js": "0.3.x",
-    "proj4js-defs": "0.0.x"
+    "proj4js-defs": "0.0.x",
+    "cartodb": "0.0.x"
   },
   "volo": {
     "baseDir": "frontend/vendor",
