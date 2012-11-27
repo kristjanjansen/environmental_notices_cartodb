@@ -20,8 +20,8 @@ var j = schedule.scheduleJob({minute: CONFIG.scrapeMinute}, function(){
 app = tako();
 
 app.route('/config.json').json({
-  googleFusionTableId: CONFIG.googleFusionTableID,
-  googleFusionTableApiKey: CONFIG.googleFusionTableApikey,
+  cartoUser: CONFIG.cartoUser,
+  cartoTable: CONFIG.cartoTable,
 });
 
 app.route('/').file(path.join(__dirname, 'frontend/index.html'));

@@ -9,7 +9,7 @@ function setPager(year, week) {
 
 }
 
-function drawMap(year, week, tableId, apiKey, numResults) {
+function drawMap(year, week, cartoUser, cartoTable, numResults) {
   
   
   var tableId;
@@ -32,7 +32,7 @@ $('#map').gmap('destroy').gmap({
     var from = moment().year(year).isoweek(week).isoday(1).format('YYYY-MM-DDTHH:mm:ssZ');
     var to = moment().year(year).isoweek(week).isoday(7).format('YYYY-MM-DDTHH:mm:ssZ');
        
-    var url = "http://keskkonnateated.cartodb.com/api/v2/sql?q=SELECT id, date, type, description, ST_AsGeoJSON(the_geom) as the_geom FROM development WHERE date >= '" + from + "' AND date <= '" + to + "' ORDER BY id DESC"
+    var url = "http://" + cartoUser + ".cartodb.com/api/v2/sql?q=SELECT id, date, type, description, ST_AsGeoJSON(the_geom) as the_geom FROM " + cartoTable + " WHERE date >= '" + from + "' AND date <= '" + to + "' ORDER BY id DESC"
     
     console.log(url);
     
