@@ -73,7 +73,10 @@ h2, h3 {
 #content .hidden {
   display: none;
 }
+#content .marker h3 {
+  background: url(/frontend/images/marker_16x16.png) no-repeat top right;
 
+}
 #map {
   overflow:hidden;
   position:absolute;

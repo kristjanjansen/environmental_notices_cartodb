@@ -15,24 +15,19 @@ volo add
 
 ## Config
 
-1. Download [table template](https://raw.github.com/gist/3736497/dddb4ade9a6bba9275ba59066ae2ababaa00cf3d/en_table_template.csv)
-2. Create new Fusion Table by uploading that table template, note down the Table ID
-3. Click on "Share" button and set "Who has access" to "Public on the web"
-4. Create Google Fusion API key at https://developers.google.com/fusiontables/docs/v1/using#APIKey, note down your API key
-5. Create Geonames account http://www.geonames.org/login, note down account name
-6. Enable "Enable Geonames free webservice" setting
-7. Create /config directory under your project
-8. Create /config/development.json file with following contents (replace "" with your values):
+1. Create CartoDB account http://cartodb.com and note down account name
+2. Navigate to Account > Your api keys > API key and note down API key
+3. Create a new table from "I want to add some data from a URL", point it to [this link](https://raw.github.com/gist/3736497/dddb4ade9a6bba9275ba59066ae2ababaa00cf3d/en_table_template.csv)
+4. Create /config directory under your project
+5. Create /config/default.json file with following contents (replace it with your values):
 
 ```
 {
-  "googleFusionTableID": "",
-  "googleFusionTableApikey": "",
-  "googleUsername": "",
-  "googlePassword": "",
-  "geonamesUsername": "",
-  "httpPort": 8888,
-  "updateRate": 10
+  "cartoUser": "your_account_name",
+  "cartoKey": "your_api_key",
+  "cartoTable" : "en_table_template",
+  "scrapeMinute": 1,
+  "httpPort": 8888
 }
 ```
 

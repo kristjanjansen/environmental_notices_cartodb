@@ -7,12 +7,9 @@ var path = require('path')
 
 var scrape = require('./lib/scrape');
 
-// Schedule scraper to run in certain interval
+// Schedule background tasks
 
-var rule = new schedule.RecurrenceRule();
-rule.minute = new schedule.Range(0, 60, (CONFIG.updateRate || 10));
-
-var j = schedule.scheduleJob(rule, function(){
+var j = schedule.scheduleJob({minute: CONFIG.scrapeMinute}, function(){
     console.log('Launching scraper');
     scrape.scrape();
 });
@@ -23,8 +20,8 @@ var j = schedule.scheduleJob(rule, function(){
 app = tako();
 
 app.route('/config.json').json({
-  googleFusionTableId: CONFIG.googleFusionTableID,
-  googleFusionTableApiKey: CONFIG.googleFusionTableApikey,
+  cartoUser: CONFIG.cartoUser,
+  cartoTable: CONFIG.cartoTable,
 });
 
 app.route('/').file(path.join(__dirname, 'frontend/index.html'));
