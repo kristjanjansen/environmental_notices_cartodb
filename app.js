@@ -10,14 +10,9 @@ var geocode = require('./lib/geocode');
 
 // Schedule background tasks
 
-var j = schedule.scheduleJob({minute: 0}, function(){
+var j = schedule.scheduleJob({minute: CONFIG.scrapeMinute}, function(){
     console.log('Launching scraper');
     scrape.scrape();
-});
-
-var j = schedule.scheduleJob({minute: 30}, function(){
-    console.log('Launching geocoder');
-    geocode.geocode();
 });
 
 
