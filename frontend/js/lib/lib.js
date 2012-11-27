@@ -86,7 +86,7 @@ $('#map').gmap('destroy').gmap({
     $("#content div").live("click", function(event){
       var id = $(this).attr("id");
       var marker = $('#map').gmap('get', 'markers')[id];
-      selectMarker('#map', marker, true, $(this).hasClass('marker'));
+      selectMarker('#map', marker, true, $(this).hasClass('marker'), id);
     });
 
 
@@ -97,8 +97,8 @@ $('#map').gmap('destroy').gmap({
 
 
 
-function selectMarker(map, marker, scroll, hasMarker) {
-  if (hasMarker) {
+function selectMarker(map, marker, scroll, hasMarker, id) {
+  if (hasMarker && marker) {
     $(map).gmap('option', 'center', marker.position);
     $(map).gmap('option', 'zoom', 14);
   } else {
@@ -106,10 +106,10 @@ function selectMarker(map, marker, scroll, hasMarker) {
     $(map).gmap('option', 'zoom', 7);    
   }
   $('.selected').removeClass('selected');
-  $('#'+ marker.id).addClass('selected');
+  $('#'+ id).addClass('selected');
   if (scroll) {
-    $('#'+ marker.id).scrollIntoView(false); 
+    $('#'+ id).scrollIntoView(false); 
   }
   $('#content p').addClass('hidden'); 
-  $('#'+ marker.id + ' p').removeClass('hidden');
+  $('#'+ id + ' p').removeClass('hidden');
 }
