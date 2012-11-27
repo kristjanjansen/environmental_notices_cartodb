@@ -71,7 +71,7 @@ $('#map').gmap('destroy').gmap({
               id: data.rows[i].id,
             })
             .click(function() {
-              selectMarker(null, this);
+              selectMarker(this.id, true)
             });
  
           }
@@ -85,23 +85,25 @@ $('#map').gmap('destroy').gmap({
     });
 
     $("#content div").live("click", function(event){
-      selectNotice($(this).attr("id"));
-      selectMarker(false, $(this).attr("id"));
+      selectMarker($(this).attr("id"));
     });
 
 
 
 };
 
-function selectNotice(id) {
+
+function selectMarker(id, scroll) {
   $('.selected').removeClass('selected');
   $('#'+ id).addClass('selected');
   $('#content p').addClass('hidden'); 
   $('#'+ id + ' p').removeClass('hidden');
-}  
-
-function selectMarker(marker, id) {
-  var marker = (marker || $('#map').gmap('get', 'markers')[id])
+  
+  if (scroll) {
+    $('#'+ id).scrollIntoView(false); 
+  }
+  
+  var marker = $('#map').gmap('get', 'markers')[id]
   var center = new google.maps.LatLng(58.58, 25.1)
   
   if (marker) {
