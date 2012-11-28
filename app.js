@@ -14,7 +14,6 @@ var j = schedule.scheduleJob({minute: CONFIG.scrapeMinute}, function(){
     scrape.scrape();
 });
 
-
 // Create config for frontend and serve files
  
 app = tako();
