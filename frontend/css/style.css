@@ -37,13 +37,14 @@ h2, h3 {
   border-bottom: 1px solid #aaa;
 }
 #nav a {
-  padding: 15px;
+  padding: 15px 13px;
   display: inline-block;
 }
-#logo {
+#nav #logo {
   color: #333;
   background: #fff url(/frontend/images/logo.png) no-repeat 15px center;
   padding-left: 55px !important;
+  padding-right: 5px;
 }
 #prev, #next {
   float: right;
@@ -51,6 +52,15 @@ h2, h3 {
 }
 #prev:hover, #next:hover {
   background: rgba(255,0,0,0.05);
+}
+#nav #info {
+  font-size: 10px;
+  padding: 2px 5px;
+  border-radius: 12px;
+  color: #fff;
+  background: rgba(255,0,0,0.5);
+  vertical-align: bottom;
+  margin-bottom: 19px;
 }
 #content {
   overflow: scroll;
