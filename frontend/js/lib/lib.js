@@ -85,7 +85,9 @@ $('#map').gmap('destroy').gmap({
       selectMarker($(this).attr("id"));
     });
 
-
+    $("#info").live("click", function(event){
+      $("#info-content").toggleClass('hidden')
+    });
 
 };
 

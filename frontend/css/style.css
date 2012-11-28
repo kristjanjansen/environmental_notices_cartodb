@@ -62,12 +62,13 @@ h2, h3 {
   background: rgba(0,0,0,0.1);
   margin-top: 16px;
   vertical-align: top;
+  cursor: pointer;
 }
 #nav #info:hover {
   background: rgba(255,0,0,0.5);
 }
 #info-content {
-  padding: 5px 20px;
+  padding: 5px 15px;
   border-bottom: 1px solid #aaa;
 }
 #content {
@@ -88,7 +89,7 @@ h2, h3 {
 #content .selected {
   background: rgba(255,0,0,0.05);
 }
-#content .hidden {
+.hidden {
   display: none;
 }
 #content .marker h3 {
