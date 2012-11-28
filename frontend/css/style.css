@@ -6,7 +6,8 @@ body,html {
 }
 body { 
   font-family: sans-serif;
-  font-size: 80%;
+  font-size: 85%;
+  line-height: 1.4em;
 }
 a, a:link, a:visited, a:hover {
   color: #ff3333;
@@ -37,7 +38,7 @@ h2, h3 {
   border-bottom: 1px solid #aaa;
 }
 #nav a {
-  padding: 15px 13px;
+  padding: 17px 13px;
   display: inline-block;
 }
 #nav #logo {
@@ -55,12 +56,19 @@ h2, h3 {
 }
 #nav #info {
   font-size: 10px;
-  padding: 2px 5px;
+  padding: 0px 6px;
   border-radius: 12px;
   color: #fff;
+  background: rgba(0,0,0,0.1);
+  margin-top: 16px;
+  vertical-align: top;
+}
+#nav #info:hover {
   background: rgba(255,0,0,0.5);
-  vertical-align: bottom;
-  margin-bottom: 19px;
+}
+#info-content {
+  padding: 5px 20px;
+  border-bottom: 1px solid #aaa;
 }
 #content {
   overflow: scroll;
