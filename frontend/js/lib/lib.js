@@ -1,3 +1,8 @@
+$("#info").live("click", function(event){
+  $("#info-content").toggleClass('hidden')
+  $("#content").toggleClass('inactive')
+});
+
 function setPager(year, week) {
   
   var date_prev = moment().year(year).isoweek(week).subtract('days', 7);
@@ -85,11 +90,10 @@ $('#map').gmap('destroy').gmap({
       selectMarker($(this).attr("id"));
     });
 
-    $("#info").live("click", function(event){
-      $("#info-content").toggleClass('hidden')
-    });
+
 
 };
+
 
 
 function selectMarker(id, scroll) {
