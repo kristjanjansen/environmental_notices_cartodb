@@ -14,12 +14,11 @@ function setPager(year, week) {
 
 }
 
-function drawMap(year, week, cartoUser, cartoTable, numResults) {
+function drawMap(year, week) {
   
-  
+     $.getJSON('/config.json', function(CONFIG) {
   var tableId;
   var apiKey;
-  var numResults;
   
   
   
@@ -36,7 +35,7 @@ $('#map').gmap('destroy').gmap({
     var from = moment().year(year).isoweek(week).isoday(1).format('YYYY-MM-DDTHH:mm:ssZ');
     var to = moment().year(year).isoweek(week).isoday(7).format('YYYY-MM-DDTHH:mm:ssZ');
        
-    var url = "http://" + cartoUser + ".cartodb.com/api/v2/sql?q=SELECT id, date, type, description, ST_AsGeoJSON(the_geom) as the_geom FROM " + cartoTable + " WHERE date >= '" + from + "' AND date <= '" + to + "' ORDER BY type DESC"
+    var url = "http://" + CONFIG.cartoUser + ".cartodb.com/api/v2/sql?q=SELECT id, date, type, description, ST_AsGeoJSON(the_geom) as the_geom FROM " + CONFIG.cartoTable + " WHERE date >= '" + from + "' AND date <= '" + to + "' ORDER BY type DESC"
     
     console.log(url);
     
@@ -90,7 +89,7 @@ $('#map').gmap('destroy').gmap({
       selectMarker($(this).attr("id"));
     });
 
-
+  });
 
 };
 
