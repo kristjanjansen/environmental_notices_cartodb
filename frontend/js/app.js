@@ -9,19 +9,12 @@ var app = Davis(function () {
     var week = parseInt(req.params['week']);
     drawMap(year, week);    
 
-     $.getJSON('/config.json', function(data) {
-  //     drawMap(year, week, data.cartoUser, data.cartoTable);    
-    });
-
   });
 
   this.bind('start', function () {
     var year = moment().year();
     var week = moment().isoweek();
     drawMap(year, week);        
-    $.getJSON('/config.json', function(data) {
- //     drawMap(year, week, data.cartoUser, data.cartoTable);    
-   });
   
 })
 })
