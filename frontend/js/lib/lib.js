@@ -82,7 +82,7 @@ $('#map').gmap('destroy').gmap({
       $('#content').html(content);
       $("#content p").addClass('hidden');
     } else {
-      $('#content').html('<div>No results</div>');     
+      $('#content').html('<div>No results. Check previous weeks.</div>');     
     }
     });
 
