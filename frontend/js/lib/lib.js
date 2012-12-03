@@ -48,7 +48,7 @@ $('#map').gmap('destroy').gmap({
 
       var icon = new google.maps.MarkerImage("frontend/images/marker_16x16.png");
       var content = '';
-      if (data.rows) {
+      if (data.rows.length > 0) {
         
       var len = data.rows.length;
       for (var i = 0; i < len; i++) {
