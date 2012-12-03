@@ -56,8 +56,8 @@ $('#map').gmap('destroy').gmap({
 
         var date = moment(data.rows[i].date).format('DD.MM.YYYY');
         content += 
-          '<div id="' + data.rows[i].id + '"' + (the_geom ? ' class="marker" ' : '') + '><h3>' + 
-          data.rows[i].type + '</h3>' + '<span>' + 
+          '<div id="' + data.rows[i].id + '"' + (the_geom ? ' class="marker" ' : '') + '><h3><a href="/p/' + year + '/' + week + '/' + data.rows[i].id + '">' + 
+          data.rows[i].type + '</a></h3>' + '<span>' + 
           date + '</span><p>' + 
           data.rows[i].description + 
           '<a target="_blank" href="http://www.ametlikudteadaanded.ee/index.php?act=1&teade=' + 
@@ -85,10 +85,6 @@ $('#map').gmap('destroy').gmap({
     }
     });
 
-    $("#content div").live("click", function(event){
-      selectMarker($(this).attr("id"));
-    });
-
   });
 
 };
@@ -111,7 +107,7 @@ function selectMarker(id, scroll) {
   if (marker) {
     $('#map').gmap('option', 'center', marker.position);
     $('#map').gmap('option', 'zoom', 14);    
-  } else {
+  } else {console.log('bah')
     $('#map').gmap('option', 'center', center);
     $('#map').gmap('option', 'zoom', 7);            
   }

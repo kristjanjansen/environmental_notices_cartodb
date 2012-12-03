@@ -4,25 +4,28 @@ var app = Davis(function () {
     this.raiseErrors = true
   })
 
-  this.get('/p/:year/:week', function (req) {
-    var year = parseInt(req.params['year']);
-    var week = parseInt(req.params['week']);
-    drawMap(year, week);    
+        
+  this.get('/p/:year/*week', function (req) {
+    var path = req.params['week'].split('/').filter(function(a) {
+      return parseInt(a)
+    })
+    if (!path[1]) {
+      drawMap(parseInt(req.params['year']), path[0]);
+    } else {
+      selectMarker(path[1])
+    }
   });
 
   this.bind('start', function () {
     drawMap(moment().year(), moment().isoweek())
   })
 
-  this.state('/p/:year/:week/:id', function (req) {
-    console.log(req.params['id'])
-  });
   
 })
 
 
 $(document).ready(function () {
-  Davis.extend(Davis.hashRouting({ forceHashRouting: true }))
+  Davis.extend(Davis.hashRouting({ forceHashRouting: true, normalizeInitialLocation: true }))
   app.start()
 });
 
