@@ -11,11 +11,13 @@ var app = Davis(function () {
   });
 
   this.bind('start', function () {
-    Davis.location.replace(new Davis.Request ({
-      fullPath: '/p/' + moment().year() + '/' + moment().isoweek()
-    }));
+    drawMap(moment().year(), moment().isoweek())
   })
 
+  this.state('/p/:year/:week/:id', function (req) {
+    console.log(req.params['id'])
+  });
+  
 })
 
 
