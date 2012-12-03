@@ -8,15 +8,14 @@ var app = Davis(function () {
     var year = parseInt(req.params['year']);
     var week = parseInt(req.params['week']);
     drawMap(year, week);    
-
   });
 
   this.bind('start', function () {
-    var year = moment().year();
-    var week = moment().isoweek();
-    drawMap(year, week);        
-  
-})
+    Davis.location.replace(new Davis.Request ({
+      fullPath: '/p/' + moment().year() + '/' + moment().isoweek()
+    }));
+  })
+
 })
 
 
