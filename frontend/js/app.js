@@ -2,25 +2,17 @@ var app = Davis(function () {
 
   this.configure(function () {
     this.raiseErrors = true
+    this.generateRequestOnPageLoad = true        
   })
 
-  this.get('/p/:year/:week', function (req) {
-    var year = parseInt(req.params['year']);
-    var week = parseInt(req.params['week']);
-     $.getJSON('/config.json', function(data) {
-       drawMap(year, week, data.cartoUser, data.cartoTable);    
-    });
-
+  this.get('/', function (req) {
+    drawMap(moment().year(), moment().isoweek())
   });
 
-  this.bind('start', function () {
-    var year = moment().year();
-    var week = moment().isoweek();
-    $.getJSON('/config.json', function(data) {
-      drawMap(year, week, data.cartoUser, data.cartoTable);    
-   });
+  this.get('/p/:year/:week', function (req) {
+    drawMap(parseInt(req.params['year']), parseInt(req.params['week']));    
+  });
   
-})
 })
 
 
