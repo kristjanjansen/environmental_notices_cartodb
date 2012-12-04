@@ -8,9 +8,9 @@ function setPager(year, week) {
   var date_prev = moment().year(year).isoweek(week).subtract('days', 7);
   var date_next = moment().year(year).isoweek(week).add('days', 7);
 
-  $('#prev').attr('href', '/p/' + date_prev.year() + '/' + date_prev.isoweek()); 
-  $('#next').attr('href', '/p/' + date_next.year() + '/' + date_next.isoweek()); 
-  $('#logo').attr('href', '/p/' + moment().year() + '/' + moment().isoweek()); 
+  $('#prev').attr('href', '#/p/' + date_prev.year() + '/' + date_prev.isoweek()); 
+  $('#next').attr('href', '#/p/' + date_next.year() + '/' + date_next.isoweek()); 
+  $('#logo').attr('href', '#/p/' + moment().year() + '/' + moment().isoweek()); 
 
 }
 
@@ -37,7 +37,7 @@ $('#map').gmap('destroy').gmap({
     console.log(url);
     
       $.ajaxSetup({
-        cache: false
+//        cache: false
       });
       
       $.getJSON(url, function(data) {

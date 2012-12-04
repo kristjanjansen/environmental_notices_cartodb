@@ -1,23 +1,19 @@
-var app = Davis(function () {
+$(function() {
 
-  this.configure(function () {
-    this.raiseErrors = true
-    this.generateRequestOnPageLoad = true        
-  })
+  var AppRouter = Backbone.Router.extend({
+	  routes: {
+		  '': 'front',		  
+		  'p/:year/:week': 'page',		  
+		},
+ 	  front: function() {
+	    drawMap(moment().year(), moment().isoweek())
+	  },
+	  page: function(year, week, id) {
+	    drawMap(year, week)
+	  }
+	})
+	
+  var appRouter = new AppRouter();
+	Backbone.history.start();
 
-  this.get('/', function (req) {
-    drawMap(moment().year(), moment().isoweek())
-  });
-
-  this.get('/p/:year/:week', function (req) {
-    drawMap(parseInt(req.params['year']), parseInt(req.params['week']));    
-  });
-  
-})
-
-
-$(document).ready(function () {
-  Davis.extend(Davis.hashRouting({ forceHashRouting: true }))
-  app.start()
 });
-
