@@ -32,7 +32,7 @@ $('#map').gmap('destroy').gmap({
     var from = moment().year(year).isoweek(week).isoday(1).format('YYYY-MM-DDTHH:mm:ssZ');
     var to = moment().year(year).isoweek(week).isoday(7).format('YYYY-MM-DDTHH:mm:ssZ');
        
-    var url = "http://" + CONFIG.cartoUser + ".cartodb.com/api/v2/sql?q=SELECT id, priority, date, type, description, description_short, ST_AsGeoJSON(the_geom) as the_geom FROM " + CONFIG.cartoTable + " WHERE priority > 0 AND date >= '" + from + "' AND date <= '" + to + "' ORDER BY priority DESC"
+    var url = "http://" + CONFIG.cartoUser + ".cartodb.com/api/v2/sql?q=SELECT id, priority, date, type, description, description_short, ST_AsGeoJSON(the_geom) as the_geom FROM " + CONFIG.cartoTable + " WHERE priority > 0 AND date >= '" + from + "' AND date <= '" + to + "' ORDER BY priority DESC, id ASC"
     
     console.log(url);
     
