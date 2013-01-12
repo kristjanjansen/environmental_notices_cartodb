@@ -58,7 +58,7 @@ $('#map').gmap('destroy').gmap({
           date + '</span><div class="short">' + data.rows[i].description_short + '</div><p>' + 
           data.rows[i].description + 
           '<a target="_blank" href="http://www.ametlikudteadaanded.ee/index.php?act=1&teade=' + 
-          data.rows[i].id + '"><br /><span data-j18s>Read more</span></a></p></div>';
+          data.rows[i].id.split('-')[0] + '"><br /><span data-j18s>Read more</span></a></p></div>';
           
           if (the_geom) {
             var rowLatlng = new google.maps.LatLng(the_geom.coordinates[1],the_geom.coordinates[0]);
