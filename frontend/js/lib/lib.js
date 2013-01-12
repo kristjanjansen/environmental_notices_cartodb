@@ -54,7 +54,7 @@ $('#map').gmap('destroy').gmap({
         var date = moment(data.rows[i].date).format('DD.MM.YYYY');
         content += 
           '<div id="' + data.rows[i].id + '"' + (the_geom ? ' class="marker" ' : '') + '><h3>' + 
-          data.rows[i].type + ' ' + data.rows[i].priority + '</h3>' + '<span>' + 
+          data.rows[i].type + '</h3>' + '<span>' + 
           date + '</span><p>' + 
           data.rows[i].description + 
           '<a target="_blank" href="http://www.ametlikudteadaanded.ee/index.php?act=1&teade=' + 
