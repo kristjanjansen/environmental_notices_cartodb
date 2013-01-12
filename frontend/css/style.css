@@ -80,6 +80,9 @@ h2, h3 {
   padding: 15px 15px 5px 15px;
   line-height: 135%;
 }
+#content div.short {
+  padding: 0;
+}
 #content h3 {
   cursor: pointer;
   opacity: 0.95;

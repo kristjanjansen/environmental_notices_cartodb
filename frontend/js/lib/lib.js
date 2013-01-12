@@ -32,7 +32,7 @@ $('#map').gmap('destroy').gmap({
     var from = moment().year(year).isoweek(week).isoday(1).format('YYYY-MM-DDTHH:mm:ssZ');
     var to = moment().year(year).isoweek(week).isoday(7).format('YYYY-MM-DDTHH:mm:ssZ');
        
-    var url = "http://" + CONFIG.cartoUser + ".cartodb.com/api/v2/sql?q=SELECT id, priority, date, type, description, ST_AsGeoJSON(the_geom) as the_geom FROM " + CONFIG.cartoTable + " WHERE priority > 0 AND date >= '" + from + "' AND date <= '" + to + "' ORDER BY priority DESC"
+    var url = "http://" + CONFIG.cartoUser + ".cartodb.com/api/v2/sql?q=SELECT id, priority, date, type, description, description_short, ST_AsGeoJSON(the_geom) as the_geom FROM " + CONFIG.cartoTable + " WHERE priority > 0 AND date >= '" + from + "' AND date <= '" + to + "' ORDER BY priority DESC"
     
     console.log(url);
     
@@ -55,7 +55,7 @@ $('#map').gmap('destroy').gmap({
         content += 
           '<div id="' + data.rows[i].id + '"' + (the_geom ? ' class="marker" ' : '') + '><h3>' + 
           data.rows[i].type + '</h3>' + '<span>' + 
-          date + '</span><p>' + 
+          date + '</span><div class="short">' + data.rows[i].description_short + '</div><p>' + 
           data.rows[i].description + 
           '<a target="_blank" href="http://www.ametlikudteadaanded.ee/index.php?act=1&teade=' + 
           data.rows[i].id + '"><br /><span data-j18s>Read more</span></a></p></div>';
@@ -96,6 +96,8 @@ function selectMarker(id, scroll) {
   $('.selected').removeClass('selected');
   $('#'+ id).addClass('selected');
   $('#content p').addClass('hidden'); 
+  $('#content .short').removeClass('hidden'); 
+  $('#'+ id + ' .short').addClass('hidden');
   $('#'+ id + ' p').removeClass('hidden');
   
   if (scroll) {
