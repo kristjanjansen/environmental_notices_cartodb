@@ -32,7 +32,7 @@ $('#map').gmap('destroy').gmap({
     var from = moment().year(year).isoweek(week).isoday(1).format('YYYY-MM-DDTHH:mm:ssZ');
     var to = moment().year(year).isoweek(week).isoday(7).format('YYYY-MM-DDTHH:mm:ssZ');
        
-    var url = "http://" + CONFIG.cartoUser + ".cartodb.com/api/v2/sql?q=SELECT id, date, type, description, ST_AsGeoJSON(the_geom) as the_geom FROM " + CONFIG.cartoTable + " WHERE date >= '" + from + "' AND date <= '" + to + "' ORDER BY type DESC"
+    var url = "http://" + CONFIG.cartoUser + ".cartodb.com/api/v2/sql?q=SELECT id, priority, date, type, description, ST_AsGeoJSON(the_geom) as the_geom FROM " + CONFIG.cartoTable + " WHERE priority > 0 AND date >= '" + from + "' AND date <= '" + to + "' ORDER BY priority DESC"
     
     console.log(url);
     
@@ -54,7 +54,7 @@ $('#map').gmap('destroy').gmap({
         var date = moment(data.rows[i].date).format('DD.MM.YYYY');
         content += 
           '<div id="' + data.rows[i].id + '"' + (the_geom ? ' class="marker" ' : '') + '><h3>' + 
-          data.rows[i].type + '</h3>' + '<span>' + 
+          data.rows[i].type + ' ' + data.rows[i].priority + '</h3>' + '<span>' + 
           date + '</span><p>' + 
           data.rows[i].description + 
           '<a target="_blank" href="http://www.ametlikudteadaanded.ee/index.php?act=1&teade=' + 

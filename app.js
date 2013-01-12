@@ -10,9 +10,11 @@ var scrape = require('./lib/scrape');
 // Schedule background tasks
 
 var j = schedule.scheduleJob({minute: CONFIG.scrapeMinute}, function(){
-    console.log('Launching scraper');
+  //  console.log('Launching scraper');
     scrape.scrape();
 });
+
+scrape.scrape();
 
 // Create config for frontend and serve files
  
