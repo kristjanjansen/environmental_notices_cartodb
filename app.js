@@ -10,14 +10,14 @@ var mail = require('./lib/mail');
 
 // Schedule background tasks
 
-var s = schedule.scheduleJob({minute: CONFIG.scrapeMinute}, function(){
+var j = schedule.scheduleJob(CONFIG.scrapeMinute + ' * * * *', function(){
     console.log('Launching scraper');
 //    scrape.scrape();
 });
 
-var m = schedule.scheduleJob({minute: CONFIG.mailMinute}, function() {
-//  console.log('Sending mail');
-  //mail.mail();
+var j = schedule.scheduleJob(CONFIG.mailMinute + ' ' + CONFIG.mailHour + ' * * ' + CONFIG.mailDay, function(){
+  console.log('Sending mail');
+  mail.mail();
 })
 
 // Create config for frontend and serve files
