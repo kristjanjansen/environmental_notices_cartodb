@@ -6,15 +6,19 @@ var tako = require('tako');
 var path = require('path')
 
 var scrape = require('./lib/scrape');
+var mail = require('./lib/mail');
 
 // Schedule background tasks
 
-var j = schedule.scheduleJob({minute: CONFIG.scrapeMinute}, function(){
-  //  console.log('Launching scraper');
-    scrape.scrape();
+var s = schedule.scheduleJob({minute: CONFIG.scrapeMinute}, function(){
+    console.log('Launching scraper');
+//    scrape.scrape();
 });
 
-scrape.scrape();
+var m = schedule.scheduleJob({minute: CONFIG.mailMinute}, function() {
+//  console.log('Sending mail');
+  //mail.mail();
+})
 
 // Create config for frontend and serve files
  
