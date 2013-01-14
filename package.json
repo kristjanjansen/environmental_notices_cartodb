@@ -11,7 +11,9 @@
     "each": "0.2.x",
     "proj4js": "0.3.x",
     "proj4js-defs": "0.0.x",
-    "cartodb": "0.0.x"
+    "cartodb": "0.0.x",
+    "moment-isocalendar": "0.1.x",
+    "nodemailer": "0.3.x"
   },
   "volo": {
     "baseDir": "frontend/vendor",
