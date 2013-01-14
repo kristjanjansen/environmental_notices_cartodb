@@ -5,10 +5,23 @@ $("#info").live("click", function(event) {
 
 function setPager(year, week) {
   
-  var date_prev = moment().year(year).isoweek(week).subtract('days', 7);
-  var date_next = moment().year(year).isoweek(week).add('days', 7);
+    var date_prev = moment().year(year).isoweek(week).subtract('days', 7);
+    if (date_prev.year() < year && date_prev.isoweek() < week ) {
+      date_prev.add('years', 1);
+    }
 
-  $('#prev').attr('href', '#/p/' + date_prev.year() + '/' + date_prev.isoweek()); 
+    var date_next = moment().year(year).isoweek(week).add('days', 7);
+    if (date_next.year() > year && date_next.isoweek() > week) {
+      date_next.subtract('years', 1);
+    }
+  
+    var date_now = moment().year(year).isoweek(week)
+  
+    console.log('Now ' + date_now.format('DD MM YYYY') + ' ' + date_now.isoweek())
+    console.log('Prev ' + date_prev.format('DD MM YYYY') + ' ' + date_prev.isoweek())
+    console.log('Next ' + date_next.format('DD MM YYYY') + ' ' + date_next.isoweek())
+  
+  $('#prev').attr('href', '#/p/' + date_prev.year() + '/' + date_prev.isoweek())
   $('#next').attr('href', '#/p/' + date_next.year() + '/' + date_next.isoweek()); 
   $('#logo').attr('href', '#/p/' + moment().year() + '/' + moment().isoweek()); 
 
@@ -27,7 +40,7 @@ $('#map').gmap('destroy').gmap({
   
     setPager(year, week);
    
-    $('#content').html('<div>Loading...</div>');
+    $('#content').html('<div>Uuendan andmeid...</div>');
         
     var from = moment().year(year).isoweek(week).isoday(1).format('YYYY-MM-DDTHH:mm:ssZ');
     var to = moment().year(year).isoweek(week).isoday(7).format('YYYY-MM-DDTHH:mm:ssZ');
@@ -78,7 +91,7 @@ $('#map').gmap('destroy').gmap({
       $('#content').html(content);
       $("#content p").addClass('hidden');
     } else {
-      $('#content').html('<div>No results. Check previous weeks.</div>');     
+      $('#content').html('<div>Sel nädalal pole andmeid kogutud. Vaata eelmist või järgmist nädalat</div>');     
     }
     });
 
