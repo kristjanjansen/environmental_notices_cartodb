@@ -12,7 +12,7 @@ var mail = require('./lib/mail');
 
 var j = schedule.scheduleJob(CONFIG.scrapeMinute + ' * * * *', function(){
     console.log('Launching scraper');
-//    scrape.scrape();
+    scrape.scrape();
 });
 
 var j = schedule.scheduleJob(CONFIG.mailMinute + ' ' + CONFIG.mailHour + ' * * ' + CONFIG.mailDay, function(){
