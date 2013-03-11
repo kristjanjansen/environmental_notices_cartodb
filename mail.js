@@ -1,5 +1,6 @@
 var config = require('config');
 var schedule = require('node-schedule');
+var moment = require('moment');
 
 var mail = require('./lib/mail');
 
@@ -9,6 +10,6 @@ rule.hour = config.mailHour;
 rule.day = config.mailDay;
 
 var m = schedule.scheduleJob(rule, function(){
-  console.log('Sending mail');
+  console.log(moment().format(), 'Sending mail');
   mail.mail();
 })
