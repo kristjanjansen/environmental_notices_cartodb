@@ -1,8 +1,3 @@
-$("#info").live("click", function(event) {
-  $("#info-content").toggleClass('hidden')
-  $("#content").toggleClass('inactive')
-});
-
 function setPager(year, week) {
   
     var date_prev = moment().year(year).isoweek(week).subtract('days', 7);
@@ -37,7 +32,12 @@ $('#map').gmap('destroy').gmap({
   'zoom': 7,
   'mapTypeId': google.maps.MapTypeId.ROADMAP
 });
-  
+
+$("#info").on("click", function(event) {
+  $("#info-content").toggleClass('hidden')
+  $("#content").toggleClass('inactive')
+});
+
     setPager(year, week);
    
     $('#content').html('<div>Uuendan andmeid...</div>');
@@ -88,16 +88,20 @@ $('#map').gmap('destroy').gmap({
           }
   
       }
+    
       $('#content').html(content);
+
+      $("#content div").on('click', function(ev){
+        selectMarker($(this).attr("id"));
+      });
+      
       $("#content p").addClass('hidden');
     } else {
       $('#content').html('<div>Sel nädalal pole andmeid kogutud. Vaata eelmist või järgmist nädalat</div>');     
     }
     });
 
-    $("#content div").live("click", function(event){
-      selectMarker($(this).attr("id"));
-    });
+
 
 })
 
