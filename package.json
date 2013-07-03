@@ -4,7 +4,7 @@
   "dependencies": {
     "node-schedule": "0.1.x",
     "request": "2.9.x",
-    "tako": "0.3.x",
+    "express": "3.3.x",
     "config": "0.4.x",
     "moment": "1.7.x",
     "cheerio": "0.10.x",

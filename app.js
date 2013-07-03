@@ -3,7 +3,7 @@ var path = require('path')
 
 var config = require('config');
 var schedule = require('node-schedule');
-var tako = require('tako');
+var express = require('express');
 var moment = require('moment');
 
 var scrape = require('./lib/scrape');
@@ -22,15 +22,21 @@ var s = schedule.scheduleJob(rule, function(){
 
 // Create config for frontend and serve frontend files
  
-app = tako();
+app = express()
 
-app.route('/config.json').json({
-  cartoUser: config.cartoUser,
-  cartoTable: config.cartoTable,
+app.use('/frontend', express.static(__dirname + '/frontend'))
+
+app.get('/config.json', function(req, res){
+  res.send({
+    cartoUser: config.cartoUser,
+    cartoTable: config.cartoTable
+  });
 });
 
-app.route('/').file(path.join(__dirname, 'frontend/index.html'));
-app.route('/frontend/*').files(path.join(__dirname, 'frontend'));
-app.httpServer.listen(config.httpPort);
+app.get('/', function(req, res){
+  res.sendfile(__dirname + '/frontend/index.html');
+});
+
+app.listen(config.httpPort)
 
 console.log(moment().format(), 'Running on ' + os.hostname() + ':'+ config.httpPort);
